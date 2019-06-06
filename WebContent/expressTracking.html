@@ -42,7 +42,7 @@
     </style>
     <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="theme/js/jquerysession.js"></script>
-    <script src="theme/layui/layui.js"></script>
+    <script src="theme/layui/layui.all.js"></script>
     <script type="text/javascript" src="theme/js/moment.js"></script>
     <script type="text/javascript"
             src="http://api.map.baidu.com/api?v=3.0&ak=27ffMSO74t53C36lZDOdR7lTmmsPZCk2"></script>
@@ -121,9 +121,9 @@
             </thead>
             <tbody>
             <tr>
-                <td id="senderName">贤心</td>
-                <td id="senderTel">2016-11-29</td>
-                <td id="senderAddress">人生就像是一场修行</td>
+                <td id="senderName"></td>
+                <td id="senderTel"></td>
+                <td id="senderAddress"></td>
             </tr>
             </tbody>
         </table>
@@ -151,9 +151,9 @@
             </thead>
             <tbody>
             <tr>
-                <td id="receverName">贤心</td>
-                <td id="receverTel">2016-11-29</td>
-                <td id="receverAddress">人生就像是一场修行</td>
+                <td id="receverName"></td>
+                <td id="receverTel"></td>
+                <td id="receverAddress"></td>
             </tr>
             </tbody>
         </table>
@@ -285,14 +285,29 @@
                             var tr = "<tr><th width='900px'>无历史数据！</th></tr>";
                             $("#history").append(tr);
                         } else {
-                            var tr = "<thead><tr><th width='200px'>时间</th><th width='500px'>快件状态</th><th width='200px'>当前地点</th></tr></thead>";
-                            $("#history").append(tr);
-
-                            for (var i in historyList.timeList) {
-                                var tr = "<tr><td>" + moment(historyList.timeList[i]).format("YYYY-MM-DD HH:mm:ss") +
-                                    "</td><td>" + historyList.statusList[i] +
-                                    "</td><td>" + historyList.locationList[i] + "</td></tr>";
+                            if ($.session.get("admin") == null) {
+                                var tr = "<thead><tr><th width='200px'>时间</th><th width='500px'>快件状态</th><th width='200px'>当前地点</th></tr></thead>";
                                 $("#history").append(tr);
+
+                                for (var i in historyList.timeList) {
+                                    var tr = "<tr><td>" + moment(historyList.timeList[i]).format("YYYY-MM-DD HH:mm:ss") +
+                                        "</td><td>" + historyList.statusList[i] +
+                                        "</td><td>" + historyList.locationList[i] + "</td></tr>";
+                                    $("#history").append(tr);
+                                }
+                            } else {
+                                var tr = "<thead><tr><th width='150px'>时间</th><th width='500px'>快件状态</th><th width='150px'>当前地点</th><th width='50px'>交付人ID</th><th width='50px'>接收人ID</th></tr></thead>";
+                                $("#history").append(tr);
+
+                                for (var i in historyList.timeList) {
+                                    var ids = historyList.idList[i].split(/\s+/);
+                                    var tr = "<tr><td>" + moment(historyList.timeList[i]).format("YYYY-MM-DD HH:mm:ss") +
+                                        "</td><td>" + historyList.statusList[i] +
+                                        "</td><td>" + historyList.locationList[i] +
+                                        "</td><td id='userID' style='color: #f39800'>" + ids[0] +
+                                        "</td><td id='userID' style='color: #f39800'>" + ids[1] + "</td></tr>";
+                                    $("#history").append(tr);
+                                }
                             }
                         }
                     },
@@ -311,15 +326,15 @@
                         var routeList = data;
 
                         if (routeList.length != 0) {
-                            var tempolyline=new Array()(
+                            var tempolyline = new Array()(
                                 // new BMap.Point(116.399, 39.910),
                                 // new BMap.Point(116.405, 39.920)
                             );
-                            for(var i in routeList){
-                                tempolyline.push(new BMap.Point(i.x,i.y));
+                            for (var i in routeList) {
+                                tempolyline.push(new BMap.Point(i.x, i.y));
                             }
                             var polyline = new BMap.Polyline(tempolyline,
-                                {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5}
+                                {strokeColor: "blue", strokeWeight: 6, strokeOpacity: 0.5}
                             );
                             map.addOverlay(polyline);
                         }
@@ -335,6 +350,80 @@
             }
         });
         $("#button").trigger("click");
+
+        $("body").on("click", "#userID", function () {
+            // alert($(this).text())
+            var userID = $(this).text();
+
+            layer.open({
+                type: 2,
+                skin: 'layui-layer-molv',
+                title: '工作人员信息',
+                content: ['http://localhost:8080/anli_web/userInfo.html', 'no'],//不允许出现滚动条
+                area: ['600px', '800px'],
+                success: function (layero, index) {
+                    var callback;
+                    $.ajax({
+                        url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getUserInfo/' + userID + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function (data) {
+                            var userinfo = data;
+                            if (userinfo.length != 0) {
+
+                                if (typeof userinfo.UID !== "undefined") {
+                                    callback = $("#UID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.UID);
+                                }
+                                if (typeof userinfo.PWD !== "undefined") {
+                                    callback = $("#PWD", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.PWD);
+                                }
+                                if (typeof userinfo.name !== "undefined") {
+                                    callback = $("#name", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.name);
+                                }
+                                if (typeof userinfo.URull !== "undefined") {
+                                    callback = $("#URull", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.URull);
+                                }
+                                if (typeof userinfo.telCode !== "undefined") {
+                                    callback = $("#telCode", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.telCode);
+                                }
+                                if (typeof userinfo.status !== "undefined") {
+                                    callback = $("#status", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.status);
+                                }
+                                if (typeof userinfo.dptID !== "undefined") {
+                                    callback = $("#dptID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.dptID);
+                                }
+                                if (typeof userinfo.receivePackageID !== "undefined") {
+                                    callback = $("#receivePackageID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.receivePackageID);
+                                }
+                                if (typeof userinfo.delivePackageID !== "undefined") {
+                                    callback = $("#PdelivePackageID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.delivePackageID);
+                                }
+                                if (typeof userinfo.transPackageID !== "undefined") {
+                                    callback = $("#transPackageID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.transPackageID);
+                                }
+
+                            } else {
+                                layer.msg('无数据！');
+                            }
+                        },
+                        error: function () {
+                            layer.msg('查询失败！');
+                        }
+                    });
+                },
+            });
+        });
     });
 
 </script>

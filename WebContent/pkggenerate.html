@@ -273,10 +273,9 @@
                             next.empty();
                             next.append("<option value=''>请选择市</option>");
                             $.each(list, function (idx, obj) {
-                                alert(obj.Code+obj.Name);
                                 next.append("<option vlaue='"+obj.Code+"'>" + obj.Name + "</option>");
                             });
-                            form.render();
+                            form.render("select");
                         },
                         error: function () {
                             layer.open({
