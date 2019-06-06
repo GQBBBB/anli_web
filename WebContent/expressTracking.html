@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <title>快件追踪</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <link rel="stylesheet" href="theme/layui/css/layui.css">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        body, html {
+            width: 99%;
+            height: 100%;
+            margin-left: 10px;
+            font-family: "微软雅黑";
+        }
+
+        .layui-table thead th {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .tableleft thead th {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .mapcontainer {
+            height: 500px;
+        }
+
+        .BMap_cpyCtrl {
+            display: none;
+        }
+
+        .anchorBL {
+            display: none;
+        }
+
+    </style>
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <script src="theme/layui/layui.js"></script>
+    <script type="text/javascript" src="theme/js/moment.js"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=3.0&ak=27ffMSO74t53C36lZDOdR7lTmmsPZCk2"></script>
+</head>
+<body>
+
+<header id="lzy-header" style="width:100%">
+    <div style="margin:20px;">
+        <div style="margin-left:150px;margin-top:30px;">
+            <h1>
+                <a href="index.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
+            </h1>
+        </div>
+    </div>
+</header>
+
+<div style="text-align: center;">
+    <div class="layui-inline">
+        <table class="layui-table tableleft" lay-skin="nob">
+            <thead>
+            <tr>
+                <th style="font-size: 16px">快件追踪查询结果</th>
+            </tr>
+            </thead>
+        </table>
+
+        <table class="layui-table tableleft" lay-skin="nob">
+            <thead>
+            <tr>
+                <th style="font-size: 16px">快件状态>></th>
+            </tr>
+            </thead>
+        </table>
+        <table class="layui-table">
+            <colgroup>
+                <col width="300">
+                <col width="300">
+                <col width="300">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>运单编号</th>
+                <th>日期</th>
+                <th>快件状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="ID"></td>
+                <td id="accepteTime"></td>
+                <td id="status"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="layui-table tableleft" lay-skin="nob">
+            <thead>
+            <tr>
+                <th style="font-size: 16px">发件人信息>></th>
+            </tr>
+            </thead>
+        </table>
+
+        <table class="layui-table">
+            <colgroup>
+                <col width="300">
+                <col width="300">
+                <col width="300">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>地址</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="senderName">贤心</td>
+                <td id="senderTel">2016-11-29</td>
+                <td id="senderAddress">人生就像是一场修行</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="layui-table tableleft" lay-skin="nob">
+            <thead>
+            <tr>
+                <th style="font-size: 16px">收件人信息>></th>
+            </tr>
+            </thead>
+        </table>
+
+        <table class="layui-table">
+            <colgroup>
+                <col width="300">
+                <col width="300">
+                <col width="300">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>地址</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="receverName">贤心</td>
+                <td id="receverTel">2016-11-29</td>
+                <td id="receverAddress">人生就像是一场修行</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="mapcontainer" id="mapcontainer">
+
+
+        </div>
+        <table class="layui-table tableleft" lay-skin="nob">
+            <thead>
+            <tr>
+                <th style="font-size: 16px">快件历史>></th>
+            </tr>
+            </thead>
+        </table>
+
+        <table class="layui-table" id="history">
+
+        </table>
+    </div>
+</div>
+
+<el-button id="button" v-model="buttontwo" v-if="getfather != 1" style="float:right;margin-rgiht:20px;" type="info">
+</el-button>
+
+<footer>
+    <div class="lzy-adaption">
+        <div class="lzy-copyright">
+            <p>Copyright © 2019 anli-2. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+<script>
+    //百度地图
+    var map = new BMap.Map("mapcontainer");
+    var point = new BMap.Point(116.404, 39.915);
+    map.centerAndZoom(point, 15);
+    // //获取当前地址设为地图中心点
+    // var myCity = new BMap.LocalCity();
+    // myCity.get(function (result) {
+    //     var cityName = result.name;
+    //     map.setCenter(cityName);
+    //     map.addOverlay(new BMap.Marker(result));
+    // });
+
+    // var geolocation = new BMap.Geolocation();
+    // geolocation.getCurrentPosition(function(r){
+    //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
+    //         var mk = new BMap.Marker(r.point);
+    //         map.addOverlay(mk);
+    //         map.panTo(r.point);
+    //         alert('您的位置：'+r.point.lng+','+r.point.lat);
+    //     }
+    //     else {
+    //         alert('failed'+this.getStatus());
+    //     }
+    // },{enableHighAccuracy: true})
+
+
+    map.disableDoubleClickZoom()//禁用双击事件
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    // map.setCurrentCity("北京");          // 设置地图显示的城市
+
+
+    // var tempolyline = new Array(new BMap.Point(116.399, 39.910),
+    //     new BMap.Point(116.405, 39.920));
+    // tempolyline.push(new BMap.Point(116.425, 39.920));
+    // var polyline = new BMap.Polyline(tempolyline,
+    //     {strokeColor: "blue", strokeWeight: 6, strokeOpacity: 0.5}
+    // );
+    // map.addOverlay(polyline);
+
+
+    $(function () {
+        //模拟人工自动点击隐藏按钮，然后出发时间刷新页面信息。
+        $("#button").click(function () {
+            if ($.session.get("expressID") != null) {
+                var id = $.session.get("expressID");
+                $.session.remove("expressID");
+                //查询订单信息
+                $.ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheet/' + id + '?_type=json',
+                    type: "GET",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        var es = data;
+
+                        $("#ID").text(es.ID);
+                        $("#accepteTime").text(moment(es.accepteTime).format("YYYY-MM-DD HH:mm:ss"));
+                        if (es.status == 0) {
+                            $("#status").text("新建");
+                        } else if (es.status == 1) {
+                            $("#status").text("揽收中");
+                        } else if (es.status == 2) {
+                            $("#status").text("分拣中");
+                        } else if (es.status == 3) {
+                            $("#status").text("转运中");
+                        } else if (es.status == 4) {
+                            $("#status").text("派送中");
+                        } else if (es.status == 5) {
+                            $("#status").text("已交付");
+                        }
+
+                        $("#senderName").text(es.sender.name);
+                        $("#senderTel").text(es.sender.telCode);
+                        $("#senderAddress").text(es.sender.address);
+
+                        $("#receverName").text(es.recever.name);
+                        $("#receverTel").text(es.recever.telCode);
+                        $("#receverAddress").text(es.recever.address);
+                    },
+                    error: function () {
+                        layer.msg("没有此订单号的快件！");
+                    }
+                });
+
+                //查询订单历史
+                $.ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheetHistory/' + id + '?_type=json',
+                    type: "GET",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        var historyList = data;
+
+                        if (historyList.length == 0) {
+                            var tr = "<tr><th width='900px'>无历史数据！</th></tr>";
+                            $("#history").append(tr);
+                        } else {
+                            var tr = "<thead><tr><th width='200px'>时间</th><th width='500px'>快件状态</th><th width='200px'>当前地点</th></tr></thead>";
+                            $("#history").append(tr);
+
+                            for (var i in historyList.timeList) {
+                                var tr = "<tr><td>" + moment(historyList.timeList[i]).format("YYYY-MM-DD HH:mm:ss") +
+                                    "</td><td>" + historyList.statusList[i] +
+                                    "</td><td>" + historyList.locationList[i] + "</td></tr>";
+                                $("#history").append(tr);
+                            }
+                        }
+                    },
+                    error: function () {
+                        var tr = "<tr><th width='900px' style='text-align: center;'>无历史数据！</th></tr>";
+                        $("#history").append(tr);
+                    }
+                });
+                //获取路线
+                $.ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheetHistory/' + id + '?_type=json',
+                    type: "GET",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        var routeList = data;
+
+                        if (routeList.length != 0) {
+                            var tempolyline=new Array()(
+                                // new BMap.Point(116.399, 39.910),
+                                // new BMap.Point(116.405, 39.920)
+                            );
+                            for(var i in routeList){
+                                tempolyline.push(new BMap.Point(i.x,i.y));
+                            }
+                            var polyline = new BMap.Polyline(tempolyline,
+                                {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5}
+                            );
+                            map.addOverlay(polyline);
+                        }
+                    },
+                    error: function () {
+                        var tr = "<tr><th width='900px' style='text-align: center;'>无历史数据！</th></tr>";
+                        $("#history").append(tr);
+                    }
+                });
+            } else {
+                layer.msg("错误，将返回上一页面！");
+                window.location.href = "indexForVisitor.html";
+            }
+        });
+        $("#button").trigger("click");
+    });
+
+</script>
+</html>

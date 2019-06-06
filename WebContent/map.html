@@ -1,0 +1,78 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <title>地图</title>
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #map_canvas {
+            width: 100%;
+            height: 500px;
+        }
+
+        #result {
+            width: 100%
+        }
+    </style>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=Xg7mRFY6ifWsgWqOerOB0GqKtULhgZve"></script>
+
+</head>
+<body>
+<div id="map_canvas"></div>
+<div id="result"></div>
+<button id="run">开始</button>
+<button id="stop">停止</button>
+<button id="pause">暂停</button>
+<button id="hide">隐藏信息窗口</button>
+<button id="show">展示信息窗口</button>
+<script>
+    var map = new BMap.Map('map_canvas');
+    map.enableScrollWheelZoom();
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 13);     //地图中心点以及级别
+    var trackMap = [];
+
+    function getCars() {
+        //map.panTo(trackMap[trackMap.length - 1]);//将地图的中心点更改为给定的点。
+        //map.setZoom(14);//将视图切换到指定的缩放等级，中心点坐标不变。
+        $.ajax({
+            async: false,
+            cache: true,
+            url: "http://localhost:8080/TestCxfHibernate/REST/Misc/getPackageRoute/'+expressID+'?_type=json",
+            type: 'GET',
+            dataType: 'text',
+            success: function (result) {
+                alert("获取point");
+                var result = eval('(' + result + ')');
+                /*** 实时获取经纬度信息 ***/
+                sitsLongitude = result.lontitude;
+                sitsLatitude = result.latitude;
+                //push() 方法可向数组的末尾添加一个或多个元素，并返回新的长度。
+                trackMap.push(new BMap.Point(sitsLongitude, sitsLatitude));
+                carContent = '<div><br/>经度： ' + sitsLongitude + '<br/>纬度： ' + sitsLatitude + '<p style="color:green; margin-left:65%;">正在跟踪中</p></div>';
+                if (trackMap.length > 2) {
+                    map.addOverlay(new BMap.Polyline([trackMap[trackMap.length - 2], trackMap[trackMap.length - 1]], {
+                        strokeColor: "blue",
+                        strokeWeight: 3,
+                        strokeOpacity: 1,
+                        strokeStyle: "dashed"
+                    }));
+                }
+                addMouseoverHandler(carContent, carMarker);
+                carMarker.setPosition(trackMap[trackMap.length - 1]);//setPosition:设置标注的地理坐标
+            },
+            error: function (e) {
+                alert("获取快件信息失败");
+            }
+        });
+        setTimeout(function () {	//setTimeout() 方法用于在指定的毫秒数后调用函数或计算表达式。setTimeout() 只执行 code 一次。如果要多次调用，请使用 setInterval() 或者让 code 自身再次调用 setTimeout()。
+            getCars();
+        }, 2000);
+    }
+</script>
+</body>
+</html>

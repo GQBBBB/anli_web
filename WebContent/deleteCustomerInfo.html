@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="中集速运、中集速运" name="keywords">
+    <meta content="中集速运、中集速运" name="description">
+    <meta content="Li Zhen Ya Team" name="author">
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <title>中集速运-删除顾客信息</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <script src="theme/js/JsBarcode.all.min.js"></script>
+    <script src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/js/jQuery.print.js"></script>
+    <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        .box {
+            text-align: center;
+        }
+
+        #barcode {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+<header id="lzy-header" style="width:100%">
+    <div style="margin:20px;">
+        <div style="margin-left:150px;margin-top:30px;">
+            <h1>
+                <a href="welcome.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
+            </h1>
+        </div>
+
+</header>
+<div class="header">
+    <div class="nav">
+        <div class="drop-down clearfix">
+            <ul>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="getExpressSheetList.html">获取运单</a></li>
+                <li><a href="deleteCustomerInfo.html">用户注销</a></li>
+                <li><a href="#resignNet.html">----</a></li>
+                <li><a href="#resignNet.html">----</a></li>
+                <li><a href="register.html">工作人员注册</a></li>
+                <li><a href="#">----</a></li>
+                <li><a href="#" id="logout">退出登陆</a>
+                <li><a href="#">关于我们</a>
+                    <ul>
+                        <li>
+                            <a href="#">企业文化</a>
+                        </li>
+                        <li>
+                            <a href="#">联系我们</a>
+
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr>
+<br>
+<div class="login_m">
+    <div class="login_boder">
+        <div class="login_padding">
+            <h3>用户ID号</h3>
+            <label>
+                <input type="text" id="customerID" class="txt_input txt_input2" value="" placeholder="">
+            </label>
+            <div class="rem_sub">
+                <div class="clearfix">
+                    <div>
+                        <button id="button"
+                                style="width: 250px; height: 40px; margin-right:0px ;margin-top: 10px; background:#e48f02 ;">
+                            删除信息
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<el-button id="button1" v-model="buttontwo" v-if="getfather != 1" style="float:right;margin-rgiht:20px;" type="info">
+    打印
+</el-button>
+</body>
+<script>
+
+    $(function () {
+
+        //模拟人工自动点击隐藏按钮，然后出发时间刷新页面信息。
+        $("#button1").click(function () {
+            if ($.session.get("admin") == null) {
+                alert("对不起你没有权限访问该页面！！！请到柜台完成注销操作");
+                window.location.href = "welcom.html"
+            } else {
+                $("#adminName").html($.session.get("admin"));
+            }
+        });
+        $("#button1").trigger("click");
+        //注销登陆
+        $("#logout").click(function () {
+            $.session.clear();
+            window.location.href = "welcom.html"
+        });
+
+        //点击查询触发删除信息的操作
+        $("#button").click(function () {
+
+
+            var id = $("input#customerID").val();
+            //根据快件单获取快检数据
+            $.ajax({
+                url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/deleteCustomerInfo/' + id + '?_type=json',
+                type: "GET",
+                dataType: "html",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (r) {
+                    alert("删除成功");
+                },
+                error: function () {
+                    alert("操作失败！可能该用户不存在！！！");
+                }
+            });
+
+        });
+    });
+</script>
+</html>

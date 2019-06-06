@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>中集速运</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <link rel="stylesheet" href="theme/layui/css/layui.css">
+    <style type="text/css">
+        body, html {
+            width: 99%;
+            height: 100%;
+            margin-left: 10px;
+            font-family: "微软雅黑";
+        }
+
+        #map_canvas {
+            width: 100%;
+            height: 600px;
+        }
+
+        #result {
+            width: 90%
+        }
+    </style>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=Xg7mRFY6ifWsgWqOerOB0GqKtULhgZve"></script>
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <script src="theme/layui/layui.all.js"></script>
+</head>
+<body>
+
+<header id="lzy-header" style="width:100%">
+    <div style="margin:20px;">
+        <div style="margin-left:150px;margin-top:30px;">
+            <h1>
+                <a href="index.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
+            </h1>
+        </div>
+    </div>
+</header>
+
+<div class="header">
+    <div class="nav">
+        <div class="drop-down clearfix">
+            <ul>
+                <li><a href="#waring.html">----</a></li>
+                <li><a href="#resignNet.html">----</a></li>
+                <li><a href="#resignNet.html">----</a></li>
+                <li><a href="#">----</a></li>
+                <li><a href="order.html">运单填写</a></li>
+                <li><a href="#">关于我们</a>
+                    <ul>
+                        <li>
+                            <a href="#">企业文化</a>
+                        </li>
+                        <li>
+                            <a href="#">联系我们</a>
+
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr>
+<br>
+<section>
+    <div class="lzy-brands">
+        <div class="lzy-container">
+            <div class="lzy-form-bj"></div>
+            <div class="lzy-form">
+                <form>
+                    <input type="text" id="ID" value="" name="" placeholder="请输入查询订单号">
+                    <button id="submit">查询</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<hr>
+<div id="map_canvas"></div>
+<div id="result"></div>
+<hr>
+<section>
+
+    <div class="lzy-container">
+        <div class="lzy-title">
+            <h2>跨境电商供应链及国际物流解决方案专家</h2>
+            <div class="lzy-textures clearfix">
+                <dl style="padding-left:0; background:none;">
+                    <dt><img src="theme/img/icon/ic-1.png"></dt>
+                    <dd>
+                        <h3>国际配送</h3>
+                        <p>丰富的航空路线</p>
+                        <p>快速的寄送服务</p>
+                        <p>本地化服务团队</p>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><img src="theme/img/icon/ic-2.png"></dt>
+                    <dd>
+                        <h3>海外仓储</h3>
+                        <p>遍布全球的网点</p>
+                        <p>海外仓储管理</p>
+                        <p>分拣打包服务</p>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><img src="theme/img/icon/ic-3.png"></dt>
+                    <dd>
+                        <h3>海外仓储</h3>
+                        <p>各大保税区域布局</p>
+                        <p>备货，集货模式解读</p>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><img src="theme/img/icon/ic-4.png"></dt>
+                    <dd>
+                        <h3>关务辅导</h3>
+                        <p>报关申报咨询</p>
+                        <p>口岸政策舆情解读</p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="lzy-partner">
+            <h2>合作伙伴</h2>
+            <div class="clearfix">
+                <ul>
+                    <li><img src="theme/img/logo/pt-1.png"></li>
+                    <li><img src="theme/img/logo/pt-2.png"></li>
+                    <li><img src="theme/img/logo/pt-3.png"></li>
+                    <li><img src="theme/img/logo/pt-4.png"></li>
+                    <li><img src="theme/img/logo/pt-5.png"></li>
+                    <li><img src="theme/img/logo/pt-6.png"></li>
+                    <li><img src="theme/img/logo/pt-7.png"></li>
+                    <li><img src="theme/img/logo/pt-8.png"></li>
+                    <li><img src="theme/img/logo/pt-9.png"></li>
+                    <li><img src="theme/img/logo/pt-10.png"></li>
+                    <li><img src="theme/img/logo/pt-11.png"></li>
+                    <li><img src="theme/img/logo/pt-12.png"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<footer>
+    <div class="lzy-adaption">
+        <div class="lzy-copyright">
+            <p>Copyright © 2019 anli-2. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+<script>
+
+
+    var map = new BMap.Map('map_canvas');
+    //map.enableScrollWheelZoom();
+    var point = new BMap.Point(116.404, 39.915);
+    // 创建点坐标
+    map.centerAndZoom(point, 15);
+    var trackMap = [];
+
+    $(function () {
+
+        //根据订单号查询订单
+        $("#submit").click(function () {
+
+            var id = $("#ID").val();
+            //alert("aaaaaaaaaaaa" + id);
+            $.ajax({
+                url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheet/' + id + '?_type=json',
+                type: "GET",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    $.session.set('expressID', id);
+                    window.location.href = "expressTracking.html";
+                },
+                error: function () {
+                    layer.open({
+                        title: '查询结果'
+                        , content: '没有此订单号的快件！'
+                    });
+                }
+            });
+            return false;
+        });
+
+        //地图
+        $("").click(
+            function getInfo() {
+                var expressID = $("input#packageID").val();
+                alert("expressId-----" + expressID);
+                $.ajax({
+                    async: false,
+                    cache: true,
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getPackageRouteList/' + expressID + '?_type=json',
+                    //data:expressID,
+                    type: 'get',
+                    dataType: 'html',
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (result) {
+                        alert("获取point" + result);
+                        var result = eval('(' + result + ')');
+                        /*** 实时获取经纬度信息 ***/
+                        alert(result.length);
+                        //alert(region.length)
+                        for (var i = 0; i < result.length; i++) {
+                            sitsLongitude = JSON.stringify(result[0].x);
+                            sitsLatitude = JSON.stringify(result[0].y);
+                            //push() 方法可向数组的末尾添加一个或多个元素，并返回新的长度。
+                            trackMap.push(new BMap.Point(sitsLongitude, sitsLatitude));
+                        }
+                        //map.panTo(trackMap[trackMap.length - 1]);//将地图的中心点更改为给定的点。
+                        //map.setZoom(13);//将视图切换到指定的缩放等级，中心点坐标不变。
+                        //map.centerAndZoom(new BMap.Point(trackMap.pop[0]), 13);
+                        //var point = new BMap.Point(116.404, 39.915);
+                        //map.centerAndZoom(point, 15);
+                        //var marker = new BMap.Marker(point);        // 创建标注
+                        //  map.addOverlay(marker);
+                        //carContent = '<div><br/>经度： '+sitsLongitude+'<br/>纬度： '+sitsLatitude+'<p style="color:green; margin-left:65%;">正在跟踪中</p></div>';
+                        alert(trackMap.length);
+                        if (trackMap.length >= 2) {
+                            map.addOverlay(new BMap.Polyline([trackMap[trackMap.length - 1], trackMap[trackMap.length]], {
+                                strokeColor: "blue",
+                                strokeWeight: 10,
+                                strokeOpacity: 1,
+                                strokeStyle: "dashed"
+                            }));
+                        }
+
+                        //addMouseoverHandler(carContent, carMarker);
+                        //carMarker.setPosition(trackMap[trackMap.length-1]);//setPosition:设置标注的地理坐标
+                    },
+                    error: function (e) {
+                        alert("获取快件信息失败");
+                    }
+                });
+                setTimeout(function () {  //setTimeout() 方法用于在指定的毫秒数后调用函数或计算表达式。setTimeout() 只执行 code 一次。如果要多次调用，请使用 setInterval() 或者让 code 自身再次调用 setTimeout()。
+                    getInfo();
+                }, 20000);
+            });
+    });
+</script>
+
+</body>
+</html>

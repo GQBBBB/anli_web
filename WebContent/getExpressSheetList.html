@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="中集速运、中集速运" name="keywords">
+    <meta content="中集速运、中集速运" name="description">
+    <meta content="Li Zhen Ya Team" name="author">
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <title>运单查询</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <link type="text/css" rel="stylesheet" href="theme/layui/css/layui.css">
+    <script src="theme/js/JsBarcode.all.min.js"></script>
+    <script src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/js/jQuery.print.js"></script>
+    <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <script type="text/javascript" src="theme/js/moment.js"></script>
+    <script type="text/javascript" src="theme/layui/layui.all.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        /*更改下拉框选项选中颜色*/
+        .layui-form-select dl dd.layui-this {
+            background-color: #f39800
+        }
+    </style>
+</head>
+
+<body>
+<header id="lzy-header" style="width:100%">
+    <div style="margin:20px;">
+        <div style="margin-left:150px;margin-top:30px;">
+            <h1>
+                <a href="welcome.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
+            </h1>
+        </div>
+    </div>
+</header>
+
+<div class="header" id="header">
+    <div class="nav">
+        <div class="drop-down clearfix">
+            <ul>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="getExpressSheetList.html">获取运单</a></li>
+                <li><a href="printForm.html">运单打印</a></li>
+                <li><a href="order.html">填写运单</a></li>
+                <li><a href="#" id="logout">退出登陆</a>
+                <li><a href="#queryExpressSheet.html">----</a></li>
+                <li><a href="#">关于我们</a>
+                    <ul>
+                        <li>
+                            <a href="#">企业文化</a>
+                        </li>
+                        <li>
+                            <a href="#">联系我们</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr>
+<br>
+<div class="login_m">
+    <h3>运单查询</h3>
+    <form class="layui-form">
+        <div class="layui-input-inline" style="width:350px">
+            <select id="kind" class="layui-form-select">
+                <option value="expressSheetID">订单号</option>
+                <option value="senderTel">发送者手机号</option>
+                <option value="receiveTel">接收者手机号</option>
+            </select>
+        </div>
+        <input type="text" id="ID" value="" name="" lay-verify="required" placeholder="请输入" class="layui-input"
+               style="margin-top:10px;">
+        <button id="submit" class="layui-input"
+                style="background-color: #f39800;margin-top:10px;margin-bottom:50px; font-size: 16px">
+            查询
+        </button>
+    </form>
+</div>
+
+<div style="text-align: center;">
+    <div class="layui-inline">
+        <table class="layui-table" id="result">
+        </table>
+    </div>
+</div>
+<el-button id="button1" v-model="buttontwo" v-if="getfather != 1" style="float:right;margin-rgiht:20px;" type="info">
+</el-button>
+</body>
+<script>
+    $(function () {
+
+        //模拟人工自动点击隐藏按钮，然后出发时间刷新页面信息。
+        $("#button").click(function () {
+            if ($.session.get("admin") == null) {
+                alert("权限认证失败, 稍后跳转至主界面")
+                window.location.href = "welcome.html"
+            }
+        });
+        $("#button").trigger("click");
+
+        //注销登陆
+        $("#logout").click(function () {
+            $.session.clear();
+            window.location.href = "welcome.html"
+        });
+
+        var list;
+
+        $("#submit").click(function () {
+            //清空table残留元素
+            $("#result tr").html("");
+
+            var kind = $("#kind").find("option:selected").val();
+            var id = $("#ID").val();
+            //alert("aaaaaaaaaaaa" + kind + "bbbbbbbb" + id);
+            $.ajax({
+                url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheetByKindAndID/' + kind + '/' + id + '?_type=json',
+                type: "GET",
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    //json字符串转换为对象
+                    var expressList = data;
+                    list = expressList;
+
+                    if (expressList.length == 0) {
+                        layer.open({
+                            title: '查询结果'
+                            , content: '无数据！'
+                        });
+                    } else {
+                        var tr = "<tr><th style='width: 80px'>ID</th><th style='width: 80px'>类型</th><th style='width: 80px'>发件人ID</th><th style='width: 80px'>收件人ID</th><th style='width: 80px'>重量(kg)</th>" +
+                            "<th style='width: 80px'>运费(￥)</th><th style='width: 80px'>打包费(￥)</th><th style='width: 80px'>保险费(￥)</th><th style='width: 80px'>揽件人ID</th><th style='width: 80px'>派送人ID</th>" +
+                            "<th style='width: 130px'>揽件时间</th><th style='width: 130px'>派送时间</th><th style='width: 80px'>Acc1</th><th style='width: 80px'>Acc2</th><th style='width: 100px'>快件状态</th></tr>";
+                        $("#result").append(tr);
+
+                        $.each(expressList, function (idx, obj) {
+                            if (typeof obj.ID === "undefined") {
+                                obj.ID = "";
+                            }
+                            if (typeof obj.type === "undefined") {
+                                obj.type = "";
+                            }
+                            if (typeof obj.sender === "undefined") {
+                                obj.sender = "";
+                            }
+                            if (typeof obj.recever === "undefined") {
+                                obj.recever = "";
+                            }
+                            if (typeof obj.weight === "undefined") {
+                                obj.weight = "";
+                            }
+                            if (typeof obj.tranFee === "undefined") {
+                                obj.tranFee = "";
+                            }
+                            if (typeof obj.packageFee === "undefined") {
+                                obj.packageFee = "";
+                            }
+                            if (typeof obj.insuFee === "undefined") {
+                                obj.insuFee = "";
+                            }
+                            if (typeof obj.accepter === "undefined") {
+                                obj.accepter = "";
+                            }
+                            if (typeof obj.deliver === "undefined") {
+                                obj.deliver = "";
+                            }
+                            if (typeof obj.accepteTime === "undefined") {
+                                obj.accepteTime = "";
+                            } else {
+                                obj.accepteTime = moment(obj.accepteTime).format("YYYY-MM-DD HH:mm:ss");
+                            }
+                            if (typeof obj.deliveTime === "undefined") {
+                                obj.deliveTime = "";
+                            } else {
+                                obj.deliveTime = moment(obj.deliveTime).format("YYYY-MM-DD HH:mm:ss");
+                            }
+                            if (typeof obj.acc1 === "undefined") {
+                                obj.acc1 = "";
+                            }
+                            if (typeof obj.acc2 === "undefined") {
+                                obj.acc2 = "";
+                            }
+                            if (typeof obj.status === "undefined") {
+                                obj.status = "";
+                            }
+
+                            var tr = "<tr><td id='expressID' style='color: #f39800'>" + obj.ID +
+                                "</td><td>" + obj.type +
+                                "</td><td id='send' style='color: #f39800'>" + obj.sender.ID +
+                                "</td><td id='rece' style='color: #f39800'>" + obj.recever.ID +
+                                "</td><td>" + obj.weight +
+                                "</td><td>" + obj.tranFee +
+                                "</td><td>" + obj.packageFee +
+                                "</td><td>" + obj.insuFee +
+                                "</td><td id='userID' style='color: #f39800'>" + obj.accepter +
+                                "</td><td id='userID' style='color: #f39800'>" + obj.deliver +
+                                "</td><td>" + obj.accepteTime +
+                                "</td><td>" + obj.deliveTime +
+                                "</td><td>" + obj.acc1 +
+                                "</td><td>" + obj.acc2 +
+                                "</td><td>" + obj.status + "</td></tr>";
+                            $("#result").append(tr);
+                            //动态改变id
+                            // $("#send").attr("class", "send" + idx);
+                            // $("#rece").attr("class", "rece" + idx);
+                        });
+                    }
+                },
+                error: function () {
+                    layer.open({
+                        title: '查询失败'
+                        , content: '请重新查询！'
+                    });
+                }
+            });
+            //防止页面自动刷新
+            return false;
+        });
+
+        //鼠标移入响应
+        //动态添加元素绑定事件
+        $("body").on("click", "#send", function () {
+            // alert($(this).text());
+            var id = $(this).text();
+            $.each(list, function (idx, obj) {
+                // alert(obj.sender.ID + " & " + id);
+                if (obj.sender.ID == id) {//不用===的原因：类型可能不同
+                    if (typeof obj.sender.ID === "undefined") {
+                        obj.sender.ID = "";
+                    }
+                    if (typeof obj.sender.name === "undefined") {
+                        obj.sender.name = "";
+                    }
+                    if (typeof obj.sender.telCode === "undefined") {
+                        obj.sender.telCode = "";
+                    }
+                    if (typeof obj.sender.department === "undefined") {
+                        obj.sender.department = "";
+                    }
+                    if (typeof obj.sender.regionCode === "undefined") {
+                        obj.sender.regionCode = "";
+                    }
+                    if (typeof obj.sender.address === "undefined") {
+                        obj.sender.address = "";
+                    }
+                    if (typeof obj.sender.postCode === "undefined") {
+                        obj.sender.postCode = "";
+                    }
+
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        shadeClose: true,
+                        area: ['320px', '500px'],
+                        skin: 'yourclass',
+                        content: '<div style="text-align: center;">' +
+                            '    <p style="color: #f39800; font-size: 18px; margin-top: 8px">发件人信息</p>' +
+                            '    <div class="layui-inline">' +
+                            '        <table class="layui-table" id="result">' +
+                            '            <tr><th>ID</th><td><input type="text" class="layui-input" id="id" value="' + obj.sender.ID + '" readonly></td></tr>' +
+                            '            <tr><th>姓名</th><td><input type="text" class="layui-input" id="name" value="' + obj.sender.name + '"></td></tr>' +
+                            '            <tr><th>电话</th><td><input type="tel" class="layui-input" id="telCode" value="' + obj.sender.telCode + '"></td></tr>' +
+                            '            <tr><th>单位</th><td><input type="text" class="layui-input" id="department" value="' + obj.sender.department + '"></td></tr>' +
+                            '            <tr><th>区域码</th><td><input type="text" class="layui-input" id="regionCode" value="' + obj.sender.regionCode + '"></td></tr>' +
+                            '            <tr><th>地址</th><td><input type="text" class="layui-input" id="address" value="' + obj.sender.address + '"></td></tr>' +
+                            '            <tr><th>邮编</th><td><input type="text" class="layui-input" id="postCode" value="' + obj.sender.postCode + '"></td></tr>' +
+                            '        </table>' +
+                            '        <input type="button" id="update" class="layui-input" value="更新" style="background-color: #f39800; font-size: 16px; color: white">' +
+                            '    </div>' +
+                            '</div>'
+                    });
+                    return false;
+                }
+            });
+        });
+
+        //动态添加元素绑定事件
+        $("body").on("click", "#rece", function () {
+            // alert($(this).text());
+            var id = $(this).text();
+            $.each(list, function (idx, obj) {
+                // alert(obj.recever.ID + " & " + id);
+                if (obj.recever.ID == id) {//不用===的原因：类型可能不同
+                    if (typeof obj.recever.ID === "undefined") {
+                        obj.recever.ID = "";
+                    }
+                    if (typeof obj.recever.name === "undefined") {
+                        obj.recever.name = "";
+                    }
+                    if (typeof obj.recever.telCode === "undefined") {
+                        obj.recever.telCode = "";
+                    }
+                    if (typeof obj.recever.department === "undefined") {
+                        obj.recever.department = "";
+                    }
+                    if (typeof obj.recever.regionCode === "undefined") {
+                        obj.recever.regionCode = "";
+                    }
+                    if (typeof obj.recever.address === "undefined") {
+                        obj.recever.address = "";
+                    }
+                    if (typeof obj.recever.postCode === "undefined") {
+                        obj.recever.postCode = "";
+                    }
+
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        shadeClose: true,
+                        area: ['320px', '500px'],
+                        skin: 'yourclass',
+                        content: '<div style="text-align: center;">' +
+                            '    <p style="color: #f39800; font-size: 18px; margin-top: 8px">收件人信息</p>' +
+                            '    <div class="layui-inline">' +
+                            '        <table class="layui-table" id="result">' +
+                            '            <tr><th>ID</th><td><input type="text" class="layui-input" id="id" value="' + obj.recever.ID + '" readonly></td></tr>' +
+                            '            <tr><th>姓名</th><td><input type="text" class="layui-input" id="name" value="' + obj.recever.name + '"></td></tr>' +
+                            '            <tr><th>电话</th><td><input type="tel" class="layui-input" id="telCode" value="' + obj.recever.telCode + '"></td></tr>' +
+                            '            <tr><th>单位</th><td><input type="text" class="layui-input" id="department" value="' + obj.recever.department + '"></td></tr>' +
+                            '            <tr><th>区域码</th><td><input type="text" class="layui-input" id="regionCode" value="' + obj.recever.regionCode + '"></td></tr>' +
+                            '            <tr><th>地址</th><td><input type="text" class="layui-input" id="address" value="' + obj.recever.address + '"></td></tr>' +
+                            '            <tr><th>邮编</th><td><input type="text" class="layui-input" id="postCode" value="' + obj.recever.postCode + '"></td></tr>' +
+                            '        </table>' +
+                            '        <input type="button" id="update" class="layui-input" value="更新" style="background-color: #f39800; font-size: 16px; color: white">' +
+                            '    </div>' +
+                            '</div>'
+                    });
+                    return false;
+                }
+            });
+        });
+
+        $("body").on("click", "#expressID", function () {
+            var id = $(this).text();
+            $.session.set('expressID', id);
+            window.location.href = "expressTracking.html";
+        });
+
+        //更新用户信息
+        $("body").on("click", "#update", function () {
+            var customerInfo = new Object();
+
+            customerInfo.ID = $("#id").val();
+
+            if ($("#name").val() !== "") {
+                customerInfo.name = $("#name").val();
+            }
+
+            if ($("#telCode").val() !== "") {
+                customerInfo.telCode = $("#telCode").val();
+            }
+
+            if ($("#department").val() !== "") {
+                customerInfo.department = $("#department").val();
+            }
+
+            if ($("#regionCode").val() !== "") {
+                customerInfo.regionCode = $("#regionCode").val();
+            }
+
+            if ($("#address").val() !== "") {
+                customerInfo.address = $("#address").val();
+            }
+
+            if ($("#postCode").val() !== "") {
+                customerInfo.postCode = $("#postCode").val();
+            }
+
+            $.ajax({
+                url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/updateCustomerInfo?_type=json',
+                type: 'post',
+                data: JSON.stringify(customerInfo),
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data != null && data != "") {
+                        layer.msg('更新成功！');
+                    } else {
+                        layer.msg('更新失败！');
+                    }
+                },
+                error: function () {
+                    layer.msg('更新失败！');
+                }
+            });
+        });
+
+        $("body").on("click", "#userID", function () {
+            // alert($(this).text())
+            var userID = $(this).text();
+
+            layer.open({
+                type: 2,
+                skin: 'layui-layer-molv',
+                title: '工作人员信息',
+                content: ['http://localhost:8080/anli_web/userInfo.html', 'no'],//不允许出现滚动条
+                area: ['600px', '800px'],
+                success: function (layero, index) {
+                    var callback;
+                    $.ajax({
+                        url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getUserInfo/' + userID + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function (data) {
+                            var userinfo = data;
+                            if (userinfo.length != 0) {
+
+                                if (typeof userinfo.UID !== "undefined") {
+                                    callback = $("#UID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.UID);
+                                }
+                                if (typeof userinfo.PWD !== "undefined") {
+                                    callback = $("#PWD", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.PWD);
+                                }
+                                if (typeof userinfo.name !== "undefined") {
+                                    callback = $("#name", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.name);
+                                }
+                                if (typeof userinfo.URull !== "undefined") {
+                                    callback = $("#URull", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.URull);
+                                }
+                                if (typeof userinfo.telCode !== "undefined") {
+                                    callback = $("#telCode", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.telCode);
+                                }
+                                if (typeof userinfo.status !== "undefined") {
+                                    callback = $("#status", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.status);
+                                }
+                                if (typeof userinfo.dptID !== "undefined") {
+                                    callback = $("#dptID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.dptID);
+                                }
+                                if (typeof userinfo.receivePackageID !== "undefined") {
+                                    callback = $("#receivePackageID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.receivePackageID);
+                                }
+                                if (typeof userinfo.delivePackageID !== "undefined") {
+                                    callback = $("#PdelivePackageID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.delivePackageID);
+                                }
+                                if (typeof userinfo.transPackageID !== "undefined") {
+                                    callback = $("#transPackageID", layero.find("iframe")[0].contentWindow.document);
+                                    callback.attr("value", userinfo.transPackageID);
+                                }
+
+                            } else {
+                                layer.msg('无数据！');
+                            }
+                        },
+                        error: function () {
+                            layer.msg('查询失败！');
+                        }
+                    });
+                },
+            });
+        });
+    });
+
+    //使from表单中下拉框显示
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+    });
+
+</script>
+</html>

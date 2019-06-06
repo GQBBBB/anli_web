@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="中集速运、中集速运" name="keywords">
+    <meta content="中集速运、中集速运" name="description">
+    <meta content="Li Zhen Ya Team" name="author">
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <title>运单查询</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <script src="theme/js/JsBarcode.all.min.js"></script>
+    <script src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/js/jQuery.print.js"></script>
+    <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        .box {
+            text-align: center;
+        }
+
+        #barcode {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+<header id="lzy-header" style="width:100%">
+    <div style="margin:20px;">
+        <div style="margin-left:150px;margin-top:30px;">
+            <h1>
+                <a href="welcome.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
+            </h1>
+        </div>
+    </div>
+</header>
+
+<div class="header">
+    <div class="nav">
+        <div class="drop-down clearfix">
+            <ul>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="getExpressSheetList.html">获取运单</a></li>
+                <li><a href="printForm.html">运单打印</a></li>
+                <li><a href="order.html">填写运单</a></li>
+                <li><a href="#" id="logout">退出登陆</a>
+                <li><a href="#queryExpressSheet.html">----</a></li>
+                <li><a href="#">关于我们</a>
+                    <ul>
+                        <li>
+                            <a href="#">企业文化</a>
+                        </li>
+                        <li>
+                            <a href="#">联系我们</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="#user-index.html">----</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr>
+<br>
+<div class="login_m">
+    <div class="login_boder">
+        <div class="login_padding">
+            <h3>运单号</h3>
+            <label>
+                <input type="text" id="expressID" class="txt_input txt_input2" value="" placeholder="">
+            </label>
+
+            <div class="rem_sub">
+                <div class="clearfix">
+                    <div>
+                        <button id="button"
+                                style="width: 250px; height: 40px; margin-right:0px ;margin-top: 10px; background:#e48f02 ;">
+                            生成运单/包裹单
+                        </button>
+                    </div>
+                    <h3>运单</h3>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="lzy-tab" id="print1">
+    <div align="center" style="margin-left:50px;">
+        <table width="1089" border="0" class="tab-pick">
+            <tr>
+                <td><img id="barcode"/></td>
+            </tr>
+        </table>
+        <form>
+            <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
+                <tr style="padding-bottom:10px;">
+                    <td colspan="6"><span>发件人信息</span></td>
+                </tr>
+                <tr>
+                    <td>发件人姓名：</td>
+                    <td><input type="text" id="senderName" readonly="readonly"></td>
+                    <td>发件人电话：</td>
+                    <td><input placeholder="" value="" name="" id="senderPhone" readonly="readonly"></td>
+                    <td>所属部门：</td>
+                    <td><input placeholder="" value="" name="" id="senderDepartment" readonly="readonly"></td>
+                </tr>
+                <tr>
+                    <td>发件区域码：</td>
+                    <td><input placeholder="" value="" name="" id="senderRegionCode" readonly="readonly"></td>
+                    <td>发件人地址：</td>
+                    <td><input placeholder="" value="" name="" id="senderAddress" readonly="readonly"></td>
+                    <td>邮政编码：</td>
+                    <td><input placeholder="" value="" name="" id="senderPostCode" readonly="readonly"></td>
+                </tr>
+            </table>
+            <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
+                <tr style="padding-bottom:10px;">
+                    <td colspan="6"><span>收货人信息 </span></td>
+                </tr>
+                <tr>
+                    <td>收件人姓名：</td>
+                    <td><input placeholder="" value="" name="" id="accepterName" readonly="readonly"></td>
+                    <td>收件人手机：</td>
+                    <td><input placeholder="" value="" name="" id="accepterPhone" readonly="readonly"></td>
+                    <td>所属部门：</td>
+                    <td><input placeholder="" value="" name="" id="accepterDepartment" readonly="readonly"></td>
+                </tr>
+                <tr>
+                    <td>收件区域码：</td>
+                    <td><input placeholder="" value="" name="" id="accepterRegionCode" readonly="readonly"></td>
+                    <td>收件人地址：</td>
+                    <td><input placeholder="" value="" name="" id="accepterAddress" readonly="readonly"></td>
+                    <td>邮政编码：</td>
+                    <td><input placeholder="" value="" name="" id="accepterPostCode" readonly="readonly"></td>
+                </tr>
+
+            </table>
+
+            <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
+                <tr style="padding-bottom:10px;">
+                    <td colspan="6"><span>包裹信息 </span></td>
+                </tr>
+                <tr>
+                    <td>包裹的种类：</td>
+                    <td><input id="packageType" value="" readonly="readonly"></td>
+                    <td>包裹的大小：</td>
+                    <td><input placeholder="" value="" name="" id="packageSize" readonly="readonly"></td>
+                    <td>包裹的费用：</td>
+                    <td><input id="packageFee" value="" readonly="readonly"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div>
+        <button id="print" style="width: 250px; height: 40px; margin-left:43% ;margin-top: 10px; background:#e48f02 ;">
+            打印运单/包裹单
+        </button>
+    </div>
+</div>
+<br>
+<br>
+<el-button id="button1" v-model="buttontwo" v-if="getfather != 1" style="float:right;margin-rgiht:20px;" type="info">
+</el-button>
+</body>
+<script>
+
+    $(function () {
+        // var barcode = document.getElementById('barcode'),
+        //str = "16620902551",
+        //模拟人工自动点击隐藏按钮，然后出发时间刷新页面信息。
+        $("#button1").click(function () {
+            if ($.session.get("user") == null) {
+                alert("对不起你没有权限访问该页面！");
+                window.location.href = "welcom.html"
+            } else {
+                $("#adminName").html($.session.get("user"));
+            }
+        });
+        $("#button").trigger("click");
+        //注销登陆
+        $("#logout").click(function () {
+            $.session.clear();
+            window.location.href = "welcom.html"
+        });
+        //生成条形码
+        $("#button").click(function () {
+            var id = $("input#expressID").val();
+            options = {
+                format: "CODE128",
+                displayValue: true,
+                fontSize: 18,
+                height: 100
+            };
+
+            // $('#barcode').JsBarcode(string, options); //jQuery
+            //根据快件单获取快检数据
+            $.ajax({
+                url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheet/' + id + '?_type=json',
+                type: "GET",
+                dataType: "html",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (r) {
+                    JsBarcode(barcode, id, options); //原生
+                    var r = eval('(' + r + ')');
+                    alert(JSON.stringify(r.sender.name));
+                    //JSON.stringify(r.UID)== $("input#userID").val() && JSON.stringify(r.PWD)== $("input#userpwd").val()
+                    $('input#senderName').val(JSON.stringify(r.sender.name));
+                    $('input#senderPhone').val(JSON.stringify(r.sender.telCode));
+                    $('input#senderDepartment').val(JSON.stringify(r.sender.department));
+                    $('input#senderRegionCode').val(JSON.stringify(r.sender.regionCode));
+                    $('input#senderAddress').val(JSON.stringify(r.sender.address));
+                    $('input#senderPostCode').val(JSON.stringify(r.sender.postCode));
+                    $('input#accepterName').val(JSON.stringify(r.recever.name));
+                    $('input#accepterPhone').val(JSON.stringify(r.recever.telCode));
+                    $('input#accepterDepartment').val(JSON.stringify(r.recever.department));
+                    $('input#accepterRegionCode').val(JSON.stringify(r.recever.regionCode));
+                    $('input#accepterAddress').val(JSON.stringify(r.recever.address));
+                    $('input#accepterPostCode').val(JSON.stringify(r.recever.postCode));
+                    $('input#packageType').val(JSON.stringify(r.type));
+                    $('input#packageSize').val(JSON.stringify(r.weight));
+                    $('input#packageFee').val(JSON.stringify(r.packageFee));
+
+                },
+                error: function () {
+                    alert("操作失败！");
+                }
+            });
+
+        });
+        $("#print").click(function () {
+            //Print ele4 with custom options
+            $("#print1").print({
+                //Use Global styles
+                globalStyles: true,
+                //Add link with attrbute media=print
+                mediaPrint: true,
+                //Custom stylesheet
+                stylesheet: null,
+                //Print in a hidden iframe
+                iframe: false,
+                //Don't print this
+                noPrintSelector: "#print",
+                //Add this at top
+                // prepend : "Hello World!!!<br/>",
+                //Add this on bottom
+                //append : "<span><br/>Buh Bye!</span>",
+                //Log to console when printing is done via a deffered callback
+                deferred: $.Deferred().done(function () {
+                    console.log('Printing done', arguments);
+                })
+            });
+        });
+    });
+</script>
+</html>

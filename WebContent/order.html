@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="中集速运、中集速运" name="keywords">
+    <meta content="中集速运、中集速运" name="description">
+    <meta content="Li Zhen Ya Team" name="author">
+    <title>中集速运-订单填写</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/js/json2.js"></script>
+    <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.tabPanel ul li').click(function () {
+                $(this).addClass('hit').siblings().removeClass('hit');
+                $('.panes>div:eq(' + $(this).index() + ')').show().siblings().hide();
+            })
+        })
+    </script>
+    <script>
+        $(function () {
+            //单击按钮时执行
+            $("#logout").click(function () {
+                $.session.clear();
+                window.location.href = "welcom.html"
+            });
+            $("#signup").click(function () {
+
+                var send = new Object();
+
+                send.name = $("input#senderName").val();
+                send.telCode = $("input#senderPhone").val();
+                send.department = $("input#senderDepartment").val();
+                send.regionCode = $("input#senderRegionCode").val();
+                send.address = $("input#senderAddress").val();
+                send.postCode = $("input#senderPostCode").val();
+                $.ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
+                    type: 'post',
+                    async: false,
+                    data: JSON.stringify(send),
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (da) {
+                        send.ID = da.ID;
+                        alert("注册成功" + da.ID + send.ID);
+                    },
+                    error: function () {
+                        alert("操作失败！");
+                    }
+                });
+                var accept = new Object();
+                accept.name = $("input#accepterName").val();
+                accept.telCode = $("input#accepterPhone").val();
+                accept.department = $("input#accepterDepartment").val();
+                accept.regionCode = $("input#accepterRegionCode").val();
+                accept.address = $("input#accepterAddress").val();
+                accept.postCode = $("input#accepterPostCode").val();
+                $.ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
+                    type: 'post',
+                    async: false,
+                    data: JSON.stringify(accept),
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (d) {
+                        accept.ID = d.ID;
+                        alert("注册成功" + d.ID);
+                    },
+                    error: function () {
+                        alert("操作失败！");
+                    }
+                });
+                var es = new Object();
+                es.ID = "1";
+                es.type = 2;
+                es.sender = send;
+                es.recever = accept;
+                es.weight = null;
+                es.tranFee = null;
+                es.packageFee = null;
+                es.insuFee = null;
+                es.accepter = null;
+                es.deliver = null;
+                es.accepteTime = null;
+                es.deliveTime = null;
+                es.acc1 = null;
+                es.acc2 = null;
+                es.status = 0;
+                //es.type = $("#type").val();
+                //es.sender = $("#senderName").val();
+                //es.recever = $("#accepterName").val();
+                console.log(es);
+                //console.log(JSON.stringify(es));
+
+                $.ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/saveExpressSheet?_type=json',
+                    type: 'post',
+
+                    data: JSON.stringify(es),
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (da) {
+                        alert("注册成功");
+                    },
+                    error: function () {
+                        alert("操作失败！");
+                    }
+                });
+                console.log("end");
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <header id="lzy-header" style="width:100%">
+        <div style="margin:20px;">
+            <div style="margin-left:150px;margin-top:30px;">
+                <h1>
+                    <a href="welcome.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
+                </h1>
+            </div>
+
+    </header>
+
+    <div class="header">
+        <div class="nav">
+            <div class="drop-down clearfix">
+                <ul>
+                    <li><a href="#user-index.html">----</a></li>
+                    <li><a href="#user-index.html">----</a></li>
+                    <li><a href="#user-index.html">----</a></li>
+                    <li><a href="#waring.html">----</a></li>
+                    <li><a href="printForm.html">运单打印</a></li>
+                    <li><a href="order.html">填写运单</a></li>
+                    <li><a href="#" id="logout">退出登陆</a>
+                    <li><a href="#queryExpressSheet.html">----</a></li>
+                    <li><a href="#">关于我们</a>
+                        <ul>
+                            <li>
+                                <a href="#">企业文化</a>
+                            </li>
+                            <li>
+                                <a href="#">联系我们</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li><a href="#user-index.html">----</a></li>
+                    <li><a href="#user-index.html">----</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <section>
+        <div class="lzy-content lzy-content-order">
+            <div class="lzy-boxes lzy-boxes-order clearfix">
+                <div class="tabPanel clearfix">
+                    <ul>
+                        <li class="hit">填单</li>
+                    </ul>
+                    <div class="panes">
+                        <div class="pane" style="display:block;">
+                            <div class="panes-tab">
+                                <h3>快捷填单</h3>
+                                <ol>
+                                    <li>填写包裹信息前，请先将包裹打包、称重，并按照实重填写。从03.02.14开始由于DHL计重规则的调整，DHL开始对超重执行0容忍，<br>大于0.001kg则按下一个重量级计价。为了包裹能快速出库，推荐大家买单时多预估点包装耗材以及预留0.1kg的国际单的重量。
+                                    </li>
+                                    <li>超重的包裹需按4欧/公斤补款后才能出库。补款连接：http://item.taobao.com/item.htm?id=38631607995<br>(PS:
+                                        易欧洲推出了每走20个包裹可以自动减免1公斤的超重补款，具体细则请看公告：易欧洲-积分升重细则）
+                                    </li>
+                                    <li>订单一旦点击提交，则无法自行更改；若有错误，可在第2步我的订单中删除并重填。易欧洲入库前，如需更改可在第3步我的包裹中发起售后申请。<br>注意所有小数点的填写请用“.”表示，否则系统不能识别。
+                                    </li>
+                                    <li>发件人的门牌不能输入英文字母，如有英文字母的请输入到前面的街道名中。<br>门牌和邮编的数字请用英文输入法来输，不要用中文输入法，会影响DHL识别出单。
+                                    </li>
+                                    <li>需要批量填写包裹的，在收件人黄色条上点“+”会增加不同收件人的包裹，同一收件人多个包裹的，在蓝色包裹条上点“+”，<br>会增加同一收件人的包裹，增加物品品种在Germany后面点+。
+                                    </li>
+                                </ol>
+                                <p>＊特别提醒：根据我们的经验DHL对破损的赔付率非常低，都是因为包装不符合国际运输的规范要求，各位在打包时一定要注意包装要防潮，防震，防压。<br>因为包装不好造成的破损DHL是一律不予赔付的。
+                                </p>
+                            </div>
+                            <div class="lzy-tab">
+                                <table width="1089" border="0" class="tab-pick">
+                                    <tr>
+                                        <th>选择物流渠道</th>
+                                        <th>预计天数（工作日）</th>
+                                        <th>保额</th>
+                                        <th>收件国</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" placeholder="">EMS</td>
+                                        <td>7-9天</td>
+                                        <td>€120</td>
+                                        <td>中国大陆</td>
+                                    </tr>
+                                </table>
+                                <form>
+                                    <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
+                                        <tr style="padding-bottom:10px;">
+                                            <td colspan="5"><span>发件人信息</span><i></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>发件人姓名：</td>
+                                            <td><input type="text" id="senderName"></td>
+                                            <td>发件人电话：</td>
+                                            <td><input placeholder="" value="" name="" id="senderPhone"></td>
+                                            <td>所属部门：</td>
+                                            <td><input placeholder="" value="" name="" id="senderDepartment"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>发件区域码：</td>
+                                            <td><input placeholder="" value="" name="" id="senderRegionCode"></td>
+                                            <td>发件人地址：</td>
+                                            <td><input placeholder="" value="" name="" id="senderAddress"></td>
+                                            <td>邮政编码：</td>
+                                            <td><input placeholder="" value="" name="" id="senderPostCode"></td>
+                                        </tr>
+                                    </table>
+                                    <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
+                                        <tr style="padding-bottom:10px;">
+                                            <td colspan="5"><span>收货人信息 </span><i></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>收件人姓名：</td>
+                                            <td><input placeholder="" value="" name="" id="accepterName"></td>
+                                            <td>收件人手机：</td>
+                                            <td><input placeholder="" value="" name="" id="accepterPhone"></td>
+                                            <td>所属部门：</td>
+                                            <td><input placeholder="" value="" name="" id="accepterDepartment"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>收件区域码：</td>
+                                            <td><input placeholder="" value="" name="" id="accepterRegionCode"></td>
+                                            <td>收件人地址：</td>
+                                            <td><input placeholder="" value="" name="" id="accepterAddress"></td>
+                                            <td>邮政编码：</td>
+                                            <td><input placeholder="" value="" name="" id="accepterPostCode"></td>
+                                        </tr>
+
+                                    </table>
+
+                                    <div class="tab-text clearfix">
+                                        <p>共计：<span>12</span></p>
+                                    </div>
+                                    <div class="tab-submit">
+                                        <a id="signup">提 交</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="lzy-adaption">
+            <div class="lzy-copyright">
+                <p>Copyright © 2019 anli-2. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

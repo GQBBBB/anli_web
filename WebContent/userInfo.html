@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>用户信息</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <link rel="stylesheet" href="theme/layui/css/layui.css">
+    <style type="text/css">
+        body, html {
+            width: 99%;
+            height: 98%;
+            margin-left: 10px;
+            font-family: "微软雅黑";
+        }
+    </style>
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <script src="theme/layui/layui.js"></script>
+</head>
+<body>
+
+<header id="lzy-header" style="width:100%">
+    <div style="margin:20px;">
+        <div style="margin-left:150px;margin-top:30px;">
+            <h1>
+                <a href="index.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
+            </h1>
+        </div>
+    </div>
+</header>
+
+<div style="text-align: center;">
+    <p style="color: #f39800; font-size: 18px; margin-top: 8px">工作人员信息</p>
+    <div class="layui-inline">
+        <table class="layui-table" lay-size="sm" id="result">
+            <tr>
+                <th>UID</th>
+                <td><input type="text" class="layui-input" id="UID" readonly></td>
+            </tr>
+            <tr>
+                <th>密码</th>
+                <td><input type="password" class="layui-input" id="PWD"></td>
+            </tr>
+            <tr>
+                <th>姓名</th>
+                <td><input type="text" class="layui-input" id="name"></td>
+            </tr>
+            <tr>
+                <th>角色ID</th>
+                <td><input type="text" class="layui-input" id="URull"></td>
+            </tr>
+            <tr>
+                <th>电话</th>
+                <td><input type="tel" class="layui-input" id="telCode"></td>
+            </tr>
+            <tr>
+                <th>用户级别</th>
+                <td><input type="text" class="layui-input" id="status"></td>
+            </tr>
+            <tr>
+                <th>区域码</th>
+                <td><input type="text" class="layui-input" id="dptID"></td>
+            </tr>
+            <tr>
+                <th>接收包裹ID</th>
+                <td><input type="text" class="layui-input" id="receivePackageID"></td>
+            </tr>
+            <tr>
+                <th>派送包裹ID</th>
+                <td><input type="text" class="layui-input" id="delivePackageID"></td>
+            </tr>
+            <tr>
+                <th>转运包裹ID</th>
+                <td><input type="text" class="layui-input" id="transPackageID"></td>
+            </tr>
+        </table>
+        <input type="button" id="update" class="layui-input" value="更新"
+               style="background-color: #f39800; font-size: 16px; color: white; margin-bottom: 8px">
+    </div>
+</div>
+
+<el-button id="button1" v-model="buttontwo" v-if="getfather != 1" style="float:right;margin-rgiht:20px;" type="info">
+</el-button>
+
+<footer>
+    <div class="lzy-adaption">
+        <div class="lzy-copyright">
+            <p>Copyright © 2019 anli-2. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+</body>
+<script>
+
+    $(function () {
+
+        //模拟人工自动点击隐藏按钮，然后出发时间刷新页面信息。
+        $("#button").click(function () {
+            if ($.session.get("admin") == null) {
+                alert("权限认证失败, 稍后跳转至主界面")
+                window.location.href = "welcome.html"
+            }
+        });
+        $("#button").trigger("click");
+
+        $("#update").click(function () {
+            var userInfo = new Object();
+
+            userInfo.UID = $("#UID").val();
+
+            if ($("#PWD").val() !== "") {
+                userInfo.PWD = $("#PWD").val();
+            }
+
+            if ($("#name").val() !== "") {
+                userInfo.name = $("#name").val();
+            }
+
+            if ($("#URull").val() !== "") {
+                userInfo.URull = $("#URull").val();
+            }
+
+            if ($("#telCode").val() !== "") {
+                userInfo.telCode = $("#telCode").val();
+            }
+
+            if ($("#status").val() !== "") {
+                userInfo.status = $("#status").val();
+            }
+
+            if ($("#dptID").val() !== "") {
+                userInfo.dptID = $("#dptID").val();
+            }
+
+            if ($("#receivePackageID").val() !== "") {
+                userInfo.receivePackageID = $("#receivePackageID").val();
+            }
+
+            if ($("#delivePackageID").val() !== "") {
+                userInfo.delivePackageID = $("#delivePackageID").val();
+            }
+
+            if ($("#transPackageID").val() !== "") {
+                userInfo.transPackageID = $("#transPackageID").val();
+            }
+
+            $.ajax({
+                url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/updateUserInfo?_type=json',
+                type: 'post',
+                data: JSON.stringify(userInfo),
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    var userInfo = data;
+                    if (userInfo.length == 0) {
+                        alert("更新失败！");
+                    } else {
+                        alert("更新成功！");
+                    }
+                },
+                error: function () {
+                    layer.msg('更新失败！');
+                }
+            });
+        });
+    });
+
+</script>
+</html>

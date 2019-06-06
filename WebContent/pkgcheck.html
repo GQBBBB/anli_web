@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+            name="viewport">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="中集速运、中集速运" name="keywords">
+    <meta content="中集速运、中集速运" name="description">
+    <meta content="Li Zhen Ya Team" name="author">
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <title>包裹管理</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <link type="text/css" rel="stylesheet" href="theme/layui/css/layui.css">
+    <script src="theme/js/JsBarcode.all.min.js"></script>
+    <script src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/js/jQuery.print.js"></script>
+    <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <script type="text/javascript" src="theme/js/moment.js"></script>
+    <script type="text/javascript" src="theme/layui/layui.all.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        /*更改下拉框选项选中颜色*/
+        .layui-form-select dl dd.layui-this {
+            background-color: #f39800
+        }
+    </style>
+</head>
+
+<body>
+<header id="lzy-header" style="width: 100%">
+    <div style="margin: 20px;">
+        <div style="margin-left: 150px; margin-top: 30px;">
+            <h1>
+                <a href="welcome.html"><img src="theme/img/logo/logo1.png"
+                                            title="" about="" name=""></a>
+            </h1>
+        </div>
+    </div>
+</header>
+
+<div class="header">
+    <div class="nav">
+        <div class="drop-down clearfix">
+            <ul>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="#user-index.html">----</a></li>
+                <li><a href="pkggenerate.html">包裹管理</a>
+                    <ul>
+                        <li><a href="pkggenerate.html">包裹生成</a></li>
+                        <li><a href="pkgcheck.html">包裹查询</a></li>
+                    </ul>
+                </li>
+                <li><a href="getExpressSheetList.html">获取运单</a></li>
+                <li><a href="printForm.html">运单打印</a></li>
+                <li><a href="order.html">填写运单</a></li>
+                <li><a href="#" id="logout">退出登陆</a>
+                <li><a href="#queryExpressSheet.html"></a></li>
+                <li><a href="#">关于我们</a>
+                    <ul>
+                        <li><a href="#">企业文化</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<hr>
+<br>
+<div class="login_m">
+    <h3>包裹查询</h3>
+    <form class="layui-form">
+        <div class="layui-input-inline" style="width:350px">
+            <select id="kind" class="layui-form-select">
+                <option value="ID">包裹单号</option>
+                <option value="node">网点</option>
+            </select>
+        </div>
+
+        <div class="layui-form-item" id="nodeid" hidden="hidden">
+            <div class="layui-input-inline">
+                <select id="tn1" lay-filter="tn1">
+                    <option value="">请选择省</option>
+                    <option value="110000">北京市</option>
+                    <option value="120000">天津市</option>
+                    <option value="130000">河北省</option>
+                    <option value="140000">山西省</option>
+                    <option value="150000">内蒙古自治区</option>
+                    <option value="210000">辽宁省</option>
+                    <option value="220000">吉林省</option>
+                    <option value="230000">黑龙江省</option>
+                    <option value="310000">上海市</option>
+                    <option value="320000">江苏省</option>
+                    <option value="330000">浙江省</option>
+                    <option value="340000">安徽省</option>
+                    <option value="350000">福建省</option>
+                    <option value="360000">江西省</option>
+                    <option value="370000">山东省</option>
+                    <option value="410000">河南省</option>
+                    <option value="420000">湖北省</option>
+                    <option value="430000">湖南省</option>
+                    <option value="440000">广东省</option>
+                    <option value="450000">广西壮族自治区</option>
+                    <option value="460000">海南省</option>
+                    <option value="500000">重庆市</option>
+                    <option value="510000">四川省</option>
+                    <option value="520000">贵州省</option>
+                    <option value="530000">云南省</option>
+                    <option value="540000">西藏自治区</option>
+                    <option value="610000">陕西省</option>
+                    <option value="620000">甘肃省</option>
+                    <option value="630000">青海省</option>
+                    <option value="640000">宁夏回族自治区</option>
+                    <option value="650000">新疆维吾尔自治区</option>
+                    <option value="710000">台湾省</option>
+                    <option value="810000">香港特别行政区</option>
+                    <option value="820000">澳门特别行政区</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select id="tn2" lay-filter="tn2">
+                    <option value="">请选择市</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select id="tn3" lay-filter="tn3">
+                    <option value="">请选择县/区</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <input type="text" id="ID" value="" name="" lay-verify="required"
+                   placeholder="请输入" class="layui-input" style="margin-top: 10px;">
+            <button id="submit" class="layui-input"
+                    style="background-color: #f39800; margin-top: 10px; margin-bottom: 50px; font-size: 16px">
+                查询
+            </button>
+    </form>
+</div>
+
+<div style="text-align: center;">
+    <div class="layui-inline">
+        <table class="layui-table" id="result">
+        </table>
+    </div>
+</div>
+<el-button id="button1" v-model="buttontwo" v-if="getfather != 1"
+           style="float:right;margin-right:20px;" type="info"></el-button>
+</body>
+<script>
+    $(function () {
+
+        //模拟人工自动点击隐藏按钮，然后出发时间刷新页面信息。
+        $("#button").click(function () {
+            if ($.session.get("admin") == null) {
+                alert("权限认证失败, 稍后跳转至主界面")
+                window.location.href = "welcome.html"
+            }
+        });
+        $("#button").trigger("click");
+
+        //注销登陆
+        $("#logout").click(function () {
+            $.session.clear();
+            window.location.href = "welcome.html"
+        });
+
+        var list;
+
+        $("#submit").click(function () {
+            //清空table残留元素
+            $("#result tr").html("");
+            var kind = $("#kind").find("option:selected").val();
+            if (kind == "ID") {
+                var id = $("#ID").val();
+            } else {
+                var id = $("#sn3").find("option:selected").val();
+            }
+            $
+                .ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getPackage/'
+                        + kind
+                        + '/'
+                        + id
+                        + '?_type=json',
+                    type: "GET",
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        //json字符串转换为对象
+                        var paklist = data;
+                        list = paklist;
+                        if (paklist.length == 0) {
+                            layer.open({
+                                title: '查询结果'
+                                , content: '无数据！'
+                            });
+                        } else {
+                            var tr = "<tr><th style='width: 80px'>ID</th><th style='width: 80px'>出发地</th><th style='width: 80px'>目的地</th><th style='width: 80px'>创建时间</th><th style='width: 80px'>状态</th></tr>";
+                            $("#result").append(tr);
+                            $.each(paklist, function (idx, obj) {
+                                if (typeof obj.ID === "undefined") {
+                                    obj.ID = "";
+                                }
+                                if (typeof obj.sourceNode === "undefined") {
+                                    obj.sourceNode = "";
+                                }
+                                if (typeof obj.targetNode === "undefined") {
+                                    obj.targetNode = "";
+                                }
+                                if (typeof obj.createTime === "undefined") {
+                                    obj.createTime = "";
+                                }
+                                if (typeof obj.status === "undefined") {
+                                    obj.status = "";
+                                }
+                                var tr = "<tr><td id='pkgID' style='color: #f39800'>"
+                                    + obj.ID
+                                    + "</td><td>"
+                                    + obj.sourceNode
+                                    + "</td><td"
+                                    + obj.targetNode
+                                    + "</td><td"
+                                    + obj.createTime
+                                    + "</td><td>"
+                                    + obj.status
+                                    + "</td></tr>";
+                                $("#result")
+                                    .append(
+                                        tr);
+                                //动态改变id
+                                // $("#send").attr("class", "send" + idx);
+                                // $("#rece").attr("class", "rece" + idx);
+                            });
+                        }
+                    },
+                    error: function () {
+                        layer.open({
+                            title: '查询失败',
+                            content: '请重新查询！'
+                        });
+                    }
+                });
+            //防止页面自动刷新
+            return false;
+        });
+
+        $("body").on("click", "#pkgID", function () {
+            // alert($(this).text())
+            var userID = $(this).text();
+
+            layer.open({
+                type: 2,
+                skin: 'layui-layer-molv',
+                title: false,
+                content: ['http://localhost:8080/anli_web/getExpressSheetList.html'],
+                area: ['600px', '800px'],
+                success: function (layero, index) {
+                    console.log("ddd");
+                    var callback;
+                    callback = $("#ID", layero.find("iframe")[0].contentWindow.document);
+                    callback.val("1");
+                    callback = $("#lzy-header", layero.find("iframe")[0].contentWindow.document);
+                    callback.hide();
+                    callback = $("#header", layero.find("iframe")[0].contentWindow.document);
+                    callback.hide();
+                }
+            });
+        });
+        //使from表单中下拉框显示
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+            form.on('select(sn1)', function (data) {
+                var next = $("#sn2");
+                if (data.value != '') {
+                    $.ajax({
+                        url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getCty/'
+                            + data.value
+                            + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        asyn: false,
+                        success: function (data) {
+                            var list = data;
+                            next.empty();
+                            next.append("<option value=''>请选择市</option>");
+                            $.each(list, function (idx, obj) {
+                                next.append("<option >" + obj.cty + "</option>");
+                            });
+                        },
+                        error: function () {
+                            layer.open({
+                                title: '生成失败',
+                                content: '请重新生成！'
+                            });
+                        }
+                    })
+                }
+                // console.log(document.getElementById("sn1")); //得到select原始DOM对象
+                // console.log(data.value); //得到被选中的值
+                // console.log(data.othis); //得到美化后的DOM对象
+            });
+            form.on('select(sn2)', function (data) {
+                var next = $("#sn3");
+                if (data.value != '') {
+                    $.ajax({
+                        url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getTwn/'
+                            + data.value
+                            + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        asyn: false,
+                        success: function (data) {
+                            var list = data;
+                            next.empty();
+                            next.append("<option value=''>请选择县/区</option>");
+                            $.each(list, function (idx, obj) {
+                                next.append("<option >" + obj.twn + "</option>");
+                            });
+                        },
+                        error: function () {
+                            layer.open({
+                                title: '生成失败',
+                                content: '请重新生成！'
+                            });
+                        }
+                    })
+                }
+            });
+            form.on('select(kind)', function (data) {
+                if (data.value != "ID") {
+                    $("#ID").show();
+                    $("#nodeid").hide();
+                } else {
+                    $("#ID").hide();
+                    $("#nodeid").show();
+                }
+            });
+        });
+    });
+</script>
+
+</html>
