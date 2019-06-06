@@ -90,14 +90,14 @@
     <h3>包裹查询</h3>
     <form class="layui-form">
         <div class="layui-input-inline" style="width:350px">
-            <select id="kind" class="layui-form-select">
+            <select id="pkgkind" class="layui-form-select" lay-filter="pkgkind">
                 <option value="ID">包裹单号</option>
                 <option value="node">网点</option>
             </select>
         </div>
 
-        <div class="layui-form-item" id="nodeid" hidden="hidden">
-            <div class="layui-input-inline">
+        <div class="layui-form-item" id="nodeid" hidden="hiddened">
+            <div class="layui-input-inline" style="width:350px">
                 <select id="tn1" lay-filter="tn1">
                     <option value="">请选择省</option>
                     <option value="110000">北京市</option>
@@ -136,12 +136,12 @@
                     <option value="820000">澳门特别行政区</option>
                 </select>
             </div>
-            <div class="layui-input-inline">
+            <div class="layui-input-inline" style="width:350px">
                 <select id="tn2" lay-filter="tn2">
                     <option value="">请选择市</option>
                 </select>
             </div>
-            <div class="layui-input-inline">
+            <div class="layui-input-inline" style="width:350px">
                 <select id="tn3" lay-filter="tn3">
                     <option value="">请选择县/区</option>
                 </select>
@@ -154,6 +154,7 @@
                     style="background-color: #f39800; margin-top: 10px; margin-bottom: 50px; font-size: 16px">
                 查询
             </button>
+        </div>
     </form>
 </div>
 
@@ -189,16 +190,16 @@
         $("#submit").click(function () {
             //清空table残留元素
             $("#result tr").html("");
-            var kind = $("#kind").find("option:selected").val();
-            if (kind == "ID") {
+            var pkgkind = $("#pkgkind").find("option:selected").val();
+            if (pkgkind == "ID") {
                 var id = $("#ID").val();
             } else {
-                var id = $("#sn3").find("option:selected").val();
+                var id = $("#tn3").find("option:selected").val()+"00";
             }
             $
                 .ajax({
                     url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getPackage/'
-                        + kind
+                        + pkgkind
                         + '/'
                         + id
                         + '?_type=json',
@@ -215,7 +216,11 @@
                                 , content: '无数据！'
                             });
                         } else {
-                            var tr = "<tr><th style='width: 80px'>ID</th><th style='width: 80px'>出发地</th><th style='width: 80px'>目的地</th><th style='width: 80px'>创建时间</th><th style='width: 80px'>状态</th></tr>";
+                            var tr = "<tr><th style='width: 80px'>ID</th>" +
+                                "<th style='width: 80px'>出发地</th>" +
+                                "<th style='width: 80px'>目的地</th>" +
+                                "<th style='width: 80px'>创建时间</th>" +
+                                "<th style='width: 80px'>状态</th></tr>";
                             $("#result").append(tr);
                             $.each(paklist, function (idx, obj) {
                                 if (typeof obj.ID === "undefined") {
@@ -229,6 +234,8 @@
                                 }
                                 if (typeof obj.createTime === "undefined") {
                                     obj.createTime = "";
+                                } else {
+                                    obj.createTime = moment(obj.createTime).format("YYYY-MM-DD HH:mm:ss");
                                 }
                                 if (typeof obj.status === "undefined") {
                                     obj.status = "";
@@ -237,9 +244,9 @@
                                     + obj.ID
                                     + "</td><td>"
                                     + obj.sourceNode
-                                    + "</td><td"
+                                    + "</td><td>"
                                     + obj.targetNode
-                                    + "</td><td"
+                                    + "</td><td>"
                                     + obj.createTime
                                     + "</td><td>"
                                     + obj.status
@@ -277,8 +284,16 @@
                 success: function (layero, index) {
                     console.log("ddd");
                     var callback;
+                    callback = $("#kind",layero.find("iframe")[0].contentWindow.document);
+                    callback.val("packageID");
+
+                    // 新iframe窗口的对象
+                    var iframeWin = layero.find('iframe')[0].contentWindow;
+                    // 重新渲染checkbox,select同理
+                    iframeWin.layui.form.render('select');
+
                     callback = $("#ID", layero.find("iframe")[0].contentWindow.document);
-                    callback.val("1");
+                    callback.val(userID);
                     callback = $("#lzy-header", layero.find("iframe")[0].contentWindow.document);
                     callback.hide();
                     callback = $("#header", layero.find("iframe")[0].contentWindow.document);
@@ -290,11 +305,12 @@
         layui.use('form', function () {
             var form = layui.form;
             form.render();
-            form.on('select(sn1)', function (data) {
-                var next = $("#sn2");
+            form.on('select(tn1)', function (data) {
+                var next = $("#tn2");
                 if (data.value != '') {
+
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getCty/'
+                        url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getCityList/'
                             + data.value
                             + '?_type=json',
                         type: "GET",
@@ -306,8 +322,9 @@
                             next.empty();
                             next.append("<option value=''>请选择市</option>");
                             $.each(list, function (idx, obj) {
-                                next.append("<option >" + obj.cty + "</option>");
+                                next.append("<option value=" + obj.Code + ">" + obj.Name + "</option>");
                             });
+                            form.render('select');
                         },
                         error: function () {
                             layer.open({
@@ -317,15 +334,12 @@
                         }
                     })
                 }
-                // console.log(document.getElementById("sn1")); //得到select原始DOM对象
-                // console.log(data.value); //得到被选中的值
-                // console.log(data.othis); //得到美化后的DOM对象
             });
-            form.on('select(sn2)', function (data) {
-                var next = $("#sn3");
+            form.on('select(tn2)', function (data) {
+                var next = $("#tn3");
                 if (data.value != '') {
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getTwn/'
+                        url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getTownList/'
                             + data.value
                             + '?_type=json',
                         type: "GET",
@@ -337,8 +351,9 @@
                             next.empty();
                             next.append("<option value=''>请选择县/区</option>");
                             $.each(list, function (idx, obj) {
-                                next.append("<option >" + obj.twn + "</option>");
+                                next.append("<option value= " + obj.Code + ">" + obj.Name + "</option>");
                             });
+                            form.render('select');
                         },
                         error: function () {
                             layer.open({
@@ -349,8 +364,8 @@
                     })
                 }
             });
-            form.on('select(kind)', function (data) {
-                if (data.value != "ID") {
+            form.on('select(pkgkind)', function (data) {
+                if (data.value == "ID") {
                     $("#ID").show();
                     $("#nodeid").hide();
                 } else {

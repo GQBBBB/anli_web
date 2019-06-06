@@ -273,10 +273,9 @@
                             next.empty();
                             next.append("<option value=''>请选择市</option>");
                             $.each(list, function (idx, obj) {
-                                alert(obj.Code+obj.Name);
-                                next.append("<option vlaue='"+obj.Code+"'>" + obj.Name + "</option>");
+                                next.append('<option value="' + obj.Code + '">'+ obj.Name + '</option>');
                             });
-                            form.render();
+                            form.render('select');
                         },
                         error: function () {
                             layer.open({
@@ -306,8 +305,9 @@
                             next.empty();
                             next.append("<option value=''>请选择县/区</option>");
                             $.each(list, function (idx, obj) {
-                                next.append("<option '"+obj.Code+"'>" + obj.Name + "</option>");
+                                next.append("<option value=" + obj.Code + ">" + obj.Name + "</option>");
                             });
+                            form.render('select');
                         },
                         error: function () {
                             layer.open({
@@ -321,6 +321,7 @@
             form.on('select(tn1)', function (data) {
                 var next = $("#tn2");
                 if (data.value != '') {
+
                     $.ajax({
                         url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getCityList/'
                             + data.value
@@ -334,8 +335,9 @@
                             next.empty();
                             next.append("<option value=''>请选择市</option>");
                             $.each(list, function (idx, obj) {
-                                next.append("<option '"+obj.Code+"'>" + obj.Name + "</option>");
+                                next.append("<option value=" + obj.Code + ">" + obj.Name + "</option>");
                             });
+                            form.render('select');
                         },
                         error: function () {
                             layer.open({
@@ -362,8 +364,9 @@
                             next.empty();
                             next.append("<option value=''>请选择县/区</option>");
                             $.each(list, function (idx, obj) {
-                                next.append("<option '"+obj.Code+"'>" + obj.Name + "</option>");
+                                next.append("<option value= " + obj.Code + ">" + obj.Name + "</option>");
                             });
+                            form.render('select');
                         },
                         error: function () {
                             layer.open({
@@ -374,11 +377,11 @@
                     })
                 }
             });
-            form.on('submit(go)', function(data){
+            form.on('submit(go)', function (data) {
                 // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
                 // console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-                if($("#sn3").val()==''||$("#tn3")==''){
+                if ($("#sn3").val() == '' || $("#tn3") == '') {
                     layer.open({
                         title: '请完善地址信息',
                         content: ''
@@ -388,7 +391,7 @@
                 var sn = $("#sn3").val();
                 var tn = $("#tn3").val();
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/CreatPackage/'
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/CreatePackage/'
                         + sn
                         + '/'
                         + tn
@@ -398,8 +401,7 @@
                     contentType: 'application/json;charset=UTF-8',
                     success: function (data) {
                         layer.open({
-                            title: '生成成功',
-                            content: ''
+                            content: '生成成功'
                         });
                     },
                     error: function () {
