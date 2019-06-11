@@ -17,6 +17,12 @@
     <script src="theme/layui/layui.js"></script>
     <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="theme/layui/layui.all.js"></script>
+    <style>
+        /*更改下拉框选项选中颜色*/
+        .layui-form-select dl dd.layui-this {
+            background-color: #f39800
+        }
+    </style>
 </head>
 <body>
 
@@ -56,14 +62,79 @@
                         <label>
                             <input type="text" id="phone" class="txt_input txt_input2" value="" placeholder="">
                         </label>
+
+                        <form class="layui-form">
+                            <h2>地址</h2>
+                            <label>
+                                <div class="layui-input-inline" style="width:260px">
+                                    <select id="sn1" lay-filter="sn1" lay-verify="required" class="layui-form-select">
+                                        <option value="">请选择省</option>
+                                        <option value="110000">北京市</option>
+                                        <option value="120000">天津市</option>
+                                        <option value="130000">河北省</option>
+                                        <option value="140000">山西省</option>
+                                        <option value="150000">内蒙古自治区</option>
+                                        <option value="210000">辽宁省</option>
+                                        <option value="220000">吉林省</option>
+                                        <option value="230000">黑龙江省</option>
+                                        <option value="310000">上海市</option>
+                                        <option value="320000">江苏省</option>
+                                        <option value="330000">浙江省</option>
+                                        <option value="340000">安徽省</option>
+                                        <option value="350000">福建省</option>
+                                        <option value="360000">江西省</option>
+                                        <option value="370000">山东省</option>
+                                        <option value="410000">河南省</option>
+                                        <option value="420000">湖北省</option>
+                                        <option value="430000">湖南省</option>
+                                        <option value="440000">广东省</option>
+                                        <option value="450000">广西壮族自治区</option>
+                                        <option value="460000">海南省</option>
+                                        <option value="500000">重庆市</option>
+                                        <option value="510000">四川省</option>
+                                        <option value="520000">贵州省</option>
+                                        <option value="530000">云南省</option>
+                                        <option value="540000">西藏自治区</option>
+                                        <option value="610000">陕西省</option>
+                                        <option value="620000">甘肃省</option>
+                                        <option value="630000">青海省</option>
+                                        <option value="640000">宁夏回族自治区</option>
+                                        <option value="650000">新疆维吾尔自治区</option>
+                                        <option value="710000">台湾省</option>
+                                        <option value="810000">香港特别行政区</option>
+                                        <option value="820000">澳门特别行政区</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline" style="width:260px">
+                                    <select id="sn2" lay-filter="sn2" class="layui-form-select">
+                                        <option value="">请选择市</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline" style="width:260px">
+                                    <select id="sn3" lay-filter="sn3" class="layui-form-select">
+                                        <option value="">请选择县/区</option>
+                                    </select>
+                                </div>
+                            </label>
+
+                            <h2 style="margin-top: 10px">角色</h2>
+                            <label>
+                                <div class="layui-input-inline" style="width:260px">
+                                    <select id="role" lay-filter="role" lay-verify="required" class="layui-form-select">
+                                        <option value="">请选择用户角色</option>
+                                        <option value="0">快递员</option>
+                                        <option value="3">转运员</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </form>
+
                         <div class="rem_sub">
+
                             <div class="clearfix">
-                                <div class="rem_sub_l fl"><input type="checkbox" name="checkbox" id="save_me"
-                                                                 placeholder=""><label for="checkbox">我已阅读并同意<a
-                                        href="#">《免责申明》</a></label></div>
+                                <input type="submit" class="sub_button" name="button" id="button"
+                                       value="注册">
                             </div>
-                            <div class="clearfix"><input type="submit" class="sub_button" name="button" id="button"
-                                                         value="注册"></div>
                             <div class="reg"><a href="sign.html">我有帐号，去登录</a></div>
                         </div>
                     </div>
@@ -106,7 +177,7 @@
                     success: function (data) {
                         layer.open({
                             title: '操作成功'
-                            , content: 'UID为 '+ data + '请使用UID登陆！'
+                            , content: 'UID为 ' + data + '请使用UID登陆！'
                         });
                     },
                     error: function () {
@@ -123,6 +194,79 @@
                 });
             }
         });
+
+
+        //使from表单中下拉框显示
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+            form.on('select(sn1)', function (data) {
+                var next = $("#sn2");
+                if (data.value != '') {
+                    $.ajax({
+                        url: '/TestCxfHibernate/REST/Misc/getCityList/'
+                            + data.value
+                            + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        asyn: false,
+                        success: function (data) {
+                            var list = data;
+                            next.empty();
+                            next.append("<option value=''>请选择市</option>");
+                            $.each(list, function (idx, obj) {
+                                next.append('<option value="' + obj.Code + '">' + obj.Name + '</option>');
+                            });
+                            form.render('select');
+                        },
+                        error: function () {
+                            layer.open({
+                                title: '生成失败',
+                                content: '请重新生成！'
+                            });
+                        }
+                    })
+                }
+
+            });
+            form.on('select(sn2)', function (data) {
+                var next = $("#sn3");
+                if (data.value != '') {
+                    $.ajax({
+                        url: '/TestCxfHibernate/REST/Misc/getTownList/'
+                            + data.value
+                            + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        asyn: false,
+                        success: function (data) {
+                            var list = data;
+                            next.empty();
+                            next.append("<option value=''>请选择县/区</option>");
+                            $.each(list, function (idx, obj) {
+                                next.append("<option value=" + obj.Code + ">" + obj.Name + "</option>");
+                            });
+                            form.render('select');
+                        },
+                        error: function () {
+                            layer.open({
+                                title: '生成失败',
+                                content: '请重新生成！'
+                            });
+                        }
+                    })
+                }
+            });
+        });
+
+    });
+
+    //使from表单中下拉框显示
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
     });
 </script>
 </body>
