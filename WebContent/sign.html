@@ -102,11 +102,7 @@
                             $.session.set('admin', r.name);
                             alert("经验证，" + $.session.get('admin') + "你是本系统管理员用户，欢迎进入工作页面！");
                             window.location.href = "admin-index.html";
-                        } else if (JSON.stringify(r.status) == 2) {
-                            $.session.set('user', r.name);
-                            alert("经验证" + $.session.get('user') + "为我公司前台人员，欢迎进入工作页面！");
-                            window.location.href = "worker-index.html";
-                        } else {
+                        }else {
                             alert("您没有权限登陆！");
                         }
                     } else {
