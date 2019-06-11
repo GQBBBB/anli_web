@@ -155,46 +155,6 @@
 </footer>
 <script>
     $(function () {
-        $("#button").click(function () {
-            var user = new Object();
-            var username = $("input#username").val();
-            var passwd1 = $("input#passwd1").val();
-            var passwd2 = $("input#passwd2").val();
-            var phone = $("input#phone").val();
-            // alert("username:" + username + "  " + "passwd:" + passwd1);
-            if (passwd1 == passwd2) {
-                user.name = username;
-                user.PWD = passwd1;
-                user.telCode = phone;
-                user.URull = 0;
-                user.status = 0;
-                $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/register?_type=json',
-                    type: 'post',
-                    data: JSON.stringify(user),
-                    dataType: "json",
-                    contentType: 'application/json;charset=UTF-8',
-                    success: function (data) {
-                        layer.open({
-                            title: '操作成功'
-                            , content: 'UID为 ' + data + '请使用UID登陆！'
-                        });
-                    },
-                    error: function () {
-                        layer.open({
-                            title: '操作失败'
-                            , content: '请重新注册！'
-                        });
-                    }
-                });
-            } else {
-                layer.open({
-                    title: '前后密码不一致'
-                    , content: '请重新输入密码！'
-                });
-            }
-        });
-
 
         //使from表单中下拉框显示
         layui.use('form', function () {
@@ -261,6 +221,97 @@
             });
         });
 
+
+        $("#button").click(function () {
+            var user = new Object();
+            if ($("#username").val() == '' || $("#username") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入姓名！'
+                });
+                return false;
+            }
+            var username = $("input#username").val();
+
+            if ($("#passwd1").val() == '' || $("#passwd1") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入密码！'
+                });
+                return false;
+            }
+            var passwd1 = $("input#passwd1").val();
+
+            if ($("#passwd2").val() == '' || $("#passwd2") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请再次输入密码！'
+                });
+                return false;
+            }
+            var passwd2 = $("input#passwd2").val();
+
+            if ($("#phone").val() == '' || $("#phone") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入电话号码！'
+                });
+                return false;
+            }
+            var phone = $("input#phone").val();
+
+            if ($("#sn3").val() == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请选择地址信息！'
+                });
+                return false;
+            }
+            var dptID = $("#sn3").val() + "00";
+
+            if ($("#role").val() == '' || $("#role") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请选择角色！'
+                });
+                return false;
+            }
+            var role = $("#role").val();
+
+            alert("username:" + username + "  " + "passwd:" + passwd1 + "phone:" + phone + "  " + "sn:" + dptID);
+            if (passwd1 == passwd2) {
+                user.name = username;
+                user.PWD = passwd1;
+                user.telCode = phone;
+                user.URull = role;
+                user.dptID = dptID;
+                user.status = 0;
+                $.ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/register?_type=json',
+                    type: 'post',
+                    data: JSON.stringify(user),
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        layer.open({
+                            title: '操作成功'
+                            , content: 'UID为 ' + data + '请使用UID登陆！'
+                        });
+                    },
+                    error: function () {
+                        layer.open({
+                            title: '操作失败'
+                            , content: '请重新注册！'
+                        });
+                    }
+                });
+            } else {
+                layer.open({
+                    title: '前后密码不一致'
+                    , content: '请重新输入密码！'
+                });
+            }
+        });
     });
 
     //使from表单中下拉框显示

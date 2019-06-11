@@ -15,9 +15,11 @@
     <link type="text/css" rel="stylesheet" href="theme/css/core.css">
     <link type="text/css" rel="stylesheet" href="theme/css/home.css">
     <link type="text/css" rel="stylesheet" href="theme/css/Mycss.css">
+    <link rel="stylesheet" href="theme/layui/css/layui.css">
     <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="theme/js/json2.js"></script>
     <script type="text/javascript" src="theme/js/jquerysession.js"></script>
+    <script type="text/javascript" src="theme/layui/layui.all.js"></script>
     <script type="text/javascript">
         $(function () {
             $('.tabPanel ul li').click(function () {
@@ -26,247 +28,567 @@
             })
         })
     </script>
-    <script>
-        $(function () {
-            //单击按钮时执行
-            $("#logout").click(function () {
-                $.session.clear();
-                window.location.href = "welcom.html"
-            });
-            $("#signup").click(function () {
-
-                var send = new Object();
-
-                send.name = $("input#senderName").val();
-                send.telCode = $("input#senderPhone").val();
-                send.department = $("input#senderDepartment").val();
-                send.regionCode = $("input#senderRegionCode").val();
-                send.address = $("input#senderAddress").val();
-                send.postCode = $("input#senderPostCode").val();
-                $.ajax({
-                    url: '/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
-                    type: 'post',
-                    async: false,
-                    data: JSON.stringify(send),
-                    dataType: "json",
-                    contentType: 'application/json;charset=UTF-8',
-                    success: function (da) {
-                        send.ID = da.ID;
-                        alert("注册成功" + da.ID + send.ID);
-                    },
-                    error: function () {
-                        alert("操作失败！");
-                    }
-                });
-                var accept = new Object();
-                accept.name = $("input#accepterName").val();
-                accept.telCode = $("input#accepterPhone").val();
-                accept.department = $("input#accepterDepartment").val();
-                accept.regionCode = $("input#accepterRegionCode").val();
-                accept.address = $("input#accepterAddress").val();
-                accept.postCode = $("input#accepterPostCode").val();
-                $.ajax({
-                    url: '/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
-                    type: 'post',
-                    async: false,
-                    data: JSON.stringify(accept),
-                    dataType: "json",
-                    contentType: 'application/json;charset=UTF-8',
-                    success: function (d) {
-                        accept.ID = d.ID;
-                        alert("注册成功" + d.ID);
-                    },
-                    error: function () {
-                        alert("操作失败！");
-                    }
-                });
-                var es = new Object();
-                es.ID = "1";
-                es.type = 2;
-                es.sender = send;
-                es.recever = accept;
-                es.weight = null;
-                es.tranFee = null;
-                es.packageFee = null;
-                es.insuFee = null;
-                es.accepter = null;
-                es.deliver = null;
-                es.accepteTime = null;
-                es.deliveTime = null;
-                es.acc1 = null;
-                es.acc2 = null;
-                es.status = 0;
-                //es.type = $("#type").val();
-                //es.sender = $("#senderName").val();
-                //es.recever = $("#accepterName").val();
-                console.log(es);
-                //console.log(JSON.stringify(es));
-
-                $.ajax({
-                    url: '/TestCxfHibernate/REST/Domain/saveExpressSheet?_type=json',
-                    type: 'post',
-
-                    data: JSON.stringify(es),
-                    dataType: "json",
-                    contentType: 'application/json;charset=UTF-8',
-                    success: function (da) {
-                        alert("注册成功");
-                    },
-                    error: function () {
-                        alert("操作失败！");
-                    }
-                });
-                console.log("end");
-            });
-
-        });
-
-    </script>
+    <style>
+        /*更改下拉框选项选中颜色*/
+        .layui-form-select dl dd.layui-this {
+            background-color: #f39800
+        }
+    </style>
 
 </head>
 
 <body>
 
-    <header id="lzy-header" style="width:100%">
-        <div style="margin:20px;">
-            <div style="margin-left:150px;margin-top:30px;">
-                <h1>
-                    <a href="welcome.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
-                </h1>
-            </div>
+<header id="lzy-header" style="width:100%">
+    <div style="margin:20px;">
+        <div style="margin-left:150px;margin-top:30px;">
+            <h1>
+                <a href="welcome.html"><img src="theme/img/logo/logo1.png" title="" about="" name=""></a>
+            </h1>
+        </div>
+    </div>
+</header>
 
-    </header>
-
-    <div class="header">
-        <div class="nav">
-            <div class="drop-down clearfix">
+<div class="header">
+    <div class="nav">
+        <div class="drop-down clearfix">
             <ul>
                 <li><a href="pkggenerate.html">包裹生成</a></li>
                 <li><a href="pkgcheck.html">包裹查询</a></li>
                 <li><a href="getExpressSheetList.html">获取运单</a></li>
                 <li><a href="printForm.html">运单打印</a></li>
                 <li><a href="order.html">填写运单</a></li>
-                  <li><a href="register.html">注册</a></li>
+                <li><a href="register.html">注册</a></li>
                 <li><a href="welcome.html" id="logout">退出登陆</a>
             </ul>
-            
-            
-            </div>
+
+
         </div>
     </div>
-    <hr>
-    <br>
-    <section>
-        <div class="lzy-content lzy-content-order">
-            <div class="lzy-boxes lzy-boxes-order clearfix">
-                <div class="tabPanel clearfix">
-                    <ul>
-                        <li class="hit">填单</li>
-                    </ul>
-                    <div class="panes">
-                        <div class="pane" style="display:block;">
-                            <div class="panes-tab">
-                                <h3>快捷填单</h3>
-                                <ol>
-                                    <li>填写包裹信息前，请先将包裹打包、称重，并按照实重填写。从03.02.14开始由于DHL计重规则的调整，DHL开始对超重执行0容忍，<br>大于0.001kg则按下一个重量级计价。为了包裹能快速出库，推荐大家买单时多预估点包装耗材以及预留0.1kg的国际单的重量。
-                                    </li>
-                                    <li>超重的包裹需按4欧/公斤补款后才能出库。补款连接：http://item.taobao.com/item.htm?id=38631607995<br>(PS:
-                                        易欧洲推出了每走20个包裹可以自动减免1公斤的超重补款，具体细则请看公告：易欧洲-积分升重细则）
-                                    </li>
-                                    <li>订单一旦点击提交，则无法自行更改；若有错误，可在第2步我的订单中删除并重填。易欧洲入库前，如需更改可在第3步我的包裹中发起售后申请。<br>注意所有小数点的填写请用“.”表示，否则系统不能识别。
-                                    </li>
-                                    <li>发件人的门牌不能输入英文字母，如有英文字母的请输入到前面的街道名中。<br>门牌和邮编的数字请用英文输入法来输，不要用中文输入法，会影响DHL识别出单。
-                                    </li>
-                                    <li>需要批量填写包裹的，在收件人黄色条上点“+”会增加不同收件人的包裹，同一收件人多个包裹的，在蓝色包裹条上点“+”，<br>会增加同一收件人的包裹，增加物品品种在Germany后面点+。
-                                    </li>
-                                </ol>
-                                <p>＊特别提醒：根据我们的经验DHL对破损的赔付率非常低，都是因为包装不符合国际运输的规范要求，各位在打包时一定要注意包装要防潮，防震，防压。<br>因为包装不好造成的破损DHL是一律不予赔付的。
-                                </p>
-                            </div>
-                            <div class="lzy-tab">
-                                <table width="1089" border="0" class="tab-pick">
-                                    <tr>
-                                        <th>选择物流渠道</th>
-                                        <th>预计天数（工作日）</th>
-                                        <th>保额</th>
-                                        <th>收件国</th>
+</div>
+<hr>
+<br>
+<section>
+    <div class="lzy-content lzy-content-order">
+        <div class="lzy-boxes lzy-boxes-order clearfix">
+            <div class="tabPanel clearfix">
+                <ul>
+                    <li class="hit">填单</li>
+                </ul>
+                <div class="panes">
+                    <div class="pane" style="display:block;">
+                        <div class="panes-tab">
+                            <h3>快捷填单</h3>
+                            <ol>
+                                <li>填写包裹信息前，请先将包裹打包、称重，并按照实重填写。从03.02.14开始由于DHL计重规则的调整，DHL开始对超重执行0容忍，<br>大于0.001kg则按下一个重量级计价。为了包裹能快速出库，推荐大家买单时多预估点包装耗材以及预留0.1kg的国际单的重量。
+                                </li>
+                                <li>超重的包裹需按4欧/公斤补款后才能出库。补款连接：http://item.taobao.com/item.htm?id=38631607995<br>(PS:
+                                    易欧洲推出了每走20个包裹可以自动减免1公斤的超重补款，具体细则请看公告：易欧洲-积分升重细则）
+                                </li>
+                                <li>订单一旦点击提交，则无法自行更改；若有错误，可在第2步我的订单中删除并重填。易欧洲入库前，如需更改可在第3步我的包裹中发起售后申请。<br>注意所有小数点的填写请用“.”表示，否则系统不能识别。
+                                </li>
+                                <li>发件人的门牌不能输入英文字母，如有英文字母的请输入到前面的街道名中。<br>门牌和邮编的数字请用英文输入法来输，不要用中文输入法，会影响DHL识别出单。
+                                </li>
+                                <li>需要批量填写包裹的，在收件人黄色条上点“+”会增加不同收件人的包裹，同一收件人多个包裹的，在蓝色包裹条上点“+”，<br>会增加同一收件人的包裹，增加物品品种在Germany后面点+。
+                                </li>
+                            </ol>
+                            <p>＊特别提醒：根据我们的经验DHL对破损的赔付率非常低，都是因为包装不符合国际运输的规范要求，各位在打包时一定要注意包装要防潮，防震，防压。<br>因为包装不好造成的破损DHL是一律不予赔付的。
+                            </p>
+                        </div>
+                        <div class="lzy-tab">
+                            <table width="1089" border="0" class="tab-pick">
+                                <tr>
+                                    <th>选择物流渠道</th>
+                                    <th>预计天数（工作日）</th>
+                                    <th>保额</th>
+                                    <th>收件国</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="radio" placeholder="">EMS</td>
+                                    <td>7-9天</td>
+                                    <td>€120</td>
+                                    <td>中国大陆</td>
+                                </tr>
+                            </table>
+                            <form class="layui-form">
+                                <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
+                                    <tr style="padding-bottom:10px;">
+                                        <td colspan="6"><span>发件人信息</span><i></i></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="radio" placeholder="">EMS</td>
-                                        <td>7-9天</td>
-                                        <td>€120</td>
-                                        <td>中国大陆</td>
+                                        <td width="80px">发件人姓名：</td>
+                                        <td width="250px"><input type="text" id="senderName"></td>
+                                        <td width="80px">发件人电话：</td>
+                                        <td width="250px"><input type="tel" placeholder="" value="" name="" id="senderPhone"></td>
+                                        <td width="80px">邮政编码：</td>
+                                        <td width="250px"><input placeholder="" value="" name="" id="senderPostCode">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>地址：</td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <select id="sn1" lay-filter="sn1" lay-verify="required"
+                                                        class="layui-form-select">
+                                                    <option value="">请选择省</option>
+                                                    <option value="110000">北京市</option>
+                                                    <option value="120000">天津市</option>
+                                                    <option value="130000">河北省</option>
+                                                    <option value="140000">山西省</option>
+                                                    <option value="150000">内蒙古自治区</option>
+                                                    <option value="210000">辽宁省</option>
+                                                    <option value="220000">吉林省</option>
+                                                    <option value="230000">黑龙江省</option>
+                                                    <option value="310000">上海市</option>
+                                                    <option value="320000">江苏省</option>
+                                                    <option value="330000">浙江省</option>
+                                                    <option value="340000">安徽省</option>
+                                                    <option value="350000">福建省</option>
+                                                    <option value="360000">江西省</option>
+                                                    <option value="370000">山东省</option>
+                                                    <option value="410000">河南省</option>
+                                                    <option value="420000">湖北省</option>
+                                                    <option value="430000">湖南省</option>
+                                                    <option value="440000">广东省</option>
+                                                    <option value="450000">广西壮族自治区</option>
+                                                    <option value="460000">海南省</option>
+                                                    <option value="500000">重庆市</option>
+                                                    <option value="510000">四川省</option>
+                                                    <option value="520000">贵州省</option>
+                                                    <option value="530000">云南省</option>
+                                                    <option value="540000">西藏自治区</option>
+                                                    <option value="610000">陕西省</option>
+                                                    <option value="620000">甘肃省</option>
+                                                    <option value="630000">青海省</option>
+                                                    <option value="640000">宁夏回族自治区</option>
+                                                    <option value="650000">新疆维吾尔自治区</option>
+                                                    <option value="710000">台湾省</option>
+                                                    <option value="810000">香港特别行政区</option>
+                                                    <option value="820000">澳门特别行政区</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <select id="sn2" lay-filter="sn2" class="layui-form-select">
+                                                    <option value="">请选择市</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <select id="sn3" lay-filter="sn3" class="layui-form-select">
+                                                    <option value="">请选择县/区</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>详细地址：</td>
+                                        <td><input placeholder="请输入详细街道地址" value="" name=""
+                                                               id="senderDetailAddress"></td>
                                     </tr>
                                 </table>
-                                <form>
-                                    <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
-                                        <tr style="padding-bottom:10px;">
-                                            <td colspan="5"><span>发件人信息</span><i></i></td>
-                                        </tr>
-                                        <tr>
-                                            <td>发件人姓名：</td>
-                                            <td><input type="text" id="senderName"></td>
-                                            <td>发件人电话：</td>
-                                            <td><input placeholder="" value="" name="" id="senderPhone"></td>
-                                            <td>所属部门：</td>
-                                            <td><input placeholder="" value="" name="" id="senderDepartment"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>发件区域码：</td>
-                                            <td><input placeholder="" value="" name="" id="senderRegionCode"></td>
-                                            <td>发件人地址：</td>
-                                            <td><input placeholder="" value="" name="" id="senderAddress"></td>
-                                            <td>邮政编码：</td>
-                                            <td><input placeholder="" value="" name="" id="senderPostCode"></td>
-                                        </tr>
-                                    </table>
-                                    <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
-                                        <tr style="padding-bottom:10px;">
-                                            <td colspan="5"><span>收货人信息 </span><i></i></td>
-                                        </tr>
-                                        <tr>
-                                            <td>收件人姓名：</td>
-                                            <td><input placeholder="" value="" name="" id="accepterName"></td>
-                                            <td>收件人手机：</td>
-                                            <td><input placeholder="" value="" name="" id="accepterPhone"></td>
-                                            <td>所属部门：</td>
-                                            <td><input placeholder="" value="" name="" id="accepterDepartment"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>收件区域码：</td>
-                                            <td><input placeholder="" value="" name="" id="accepterRegionCode"></td>
-                                            <td>收件人地址：</td>
-                                            <td><input placeholder="" value="" name="" id="accepterAddress"></td>
-                                            <td>邮政编码：</td>
-                                            <td><input placeholder="" value="" name="" id="accepterPostCode"></td>
-                                        </tr>
 
-                                    </table>
+                                <table width="1089" border="0" cellspacing="0" cellpadding="0" class="tab-sender">
+                                    <tr style="padding-bottom:10px;">
+                                        <td colspan="6"><span>收件人信息</span><i></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="180px">收件人姓名：</td>
+                                        <td width="180px"><input type="text" id="receiverName"></td>
+                                        <td width="180px">收件人电话：</td>
+                                        <td width="180px"><input type="tel" placeholder="" value="" name="" id="receiverPhone">
+                                        </td>
+                                        <td width="150px">邮政编码：</td>
+                                        <td width="180px"><input placeholder="" value="" name="" id="receiverPostCode">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>地址：</td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <select id="rn1" lay-filter="rn1" lay-verify="required"
+                                                        class="layui-form-select">
+                                                    <option value="">请选择省</option>
+                                                    <option value="110000">北京市</option>
+                                                    <option value="120000">天津市</option>
+                                                    <option value="130000">河北省</option>
+                                                    <option value="140000">山西省</option>
+                                                    <option value="150000">内蒙古自治区</option>
+                                                    <option value="210000">辽宁省</option>
+                                                    <option value="220000">吉林省</option>
+                                                    <option value="230000">黑龙江省</option>
+                                                    <option value="310000">上海市</option>
+                                                    <option value="320000">江苏省</option>
+                                                    <option value="330000">浙江省</option>
+                                                    <option value="340000">安徽省</option>
+                                                    <option value="350000">福建省</option>
+                                                    <option value="360000">江西省</option>
+                                                    <option value="370000">山东省</option>
+                                                    <option value="410000">河南省</option>
+                                                    <option value="420000">湖北省</option>
+                                                    <option value="430000">湖南省</option>
+                                                    <option value="440000">广东省</option>
+                                                    <option value="450000">广西壮族自治区</option>
+                                                    <option value="460000">海南省</option>
+                                                    <option value="500000">重庆市</option>
+                                                    <option value="510000">四川省</option>
+                                                    <option value="520000">贵州省</option>
+                                                    <option value="530000">云南省</option>
+                                                    <option value="540000">西藏自治区</option>
+                                                    <option value="610000">陕西省</option>
+                                                    <option value="620000">甘肃省</option>
+                                                    <option value="630000">青海省</option>
+                                                    <option value="640000">宁夏回族自治区</option>
+                                                    <option value="650000">新疆维吾尔自治区</option>
+                                                    <option value="710000">台湾省</option>
+                                                    <option value="810000">香港特别行政区</option>
+                                                    <option value="820000">澳门特别行政区</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <select id="rn2" lay-filter="rn2" class="layui-form-select">
+                                                    <option value="">请选择市</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <select id="rn3" lay-filter="rn3" class="layui-form-select">
+                                                    <option value="">请选择县/区</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>详细地址：</td>
+                                        <td><input placeholder="请输入详细街道地址" value="" name=""
+                                                               id="receiverDetailAddress"></td>
+                                    </tr>
+                                </table>
 
-                                    <div class="tab-text clearfix">
-                                        <p>共计：<span>12</span></p>
-                                    </div>
-                                    <div class="tab-submit">
-                                        <a id="signup">提 交</a>
-                                    </div>
-                                </form>
-                            </div>
+
+                                <div class="tab-text clearfix">
+                                    <p>共计：<span>14</span></p>
+                                </div>
+                                <div class="tab-submit">
+                                    <a id="button">提 交</a>
+                                </div>
+                            </form>
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 
-    <footer>
-        <div class="lzy-adaption">
-            <div class="lzy-copyright">
-                <p>Copyright © 2019 anli-2. All Rights Reserved.</p>
-            </div>
+<footer>
+    <div class="lzy-adaption">
+        <div class="lzy-copyright">
+            <p>Copyright © 2019 anli-2. All Rights Reserved.</p>
         </div>
-    </footer>
+    </div>
+</footer>
+
+<script>
+    $(function () {
+        //单击按钮时执行
+        $("#logout").click(function () {
+            $.session.clear();
+            window.location.href = "welcome.html"
+        });
+        //使from表单中下拉框显示
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+            form.on('select(sn1)', function (data) {
+                var next = $("#sn2");
+                if (data.value != '') {
+                    $.ajax({
+                        url: '/TestCxfHibernate/REST/Misc/getCityList/'
+                            + data.value
+                            + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        asyn: false,
+                        success: function (data) {
+                            var list = data;
+                            next.empty();
+                            next.append("<option value=''>请选择市</option>");
+                            $.each(list, function (idx, obj) {
+                                next.append('<option value="' + obj.Code + '">' + obj.Name + '</option>');
+                            });
+                            form.render('select');
+                        },
+                        error: function () {
+                            layer.open({
+                                title: '生成失败',
+                                content: '请重新生成！'
+                            });
+                        }
+                    })
+                }
+
+            });
+            form.on('select(sn2)', function (data) {
+                var next = $("#sn3");
+                if (data.value != '') {
+                    $.ajax({
+                        url: '/TestCxfHibernate/REST/Misc/getTownList/'
+                            + data.value
+                            + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        asyn: false,
+                        success: function (data) {
+                            var list = data;
+                            next.empty();
+                            next.append("<option value=''>请选择县/区</option>");
+                            $.each(list, function (idx, obj) {
+                                next.append("<option value=" + obj.Code + ">" + obj.Name + "</option>");
+                            });
+                            form.render('select');
+                        },
+                        error: function () {
+                            layer.open({
+                                title: '生成失败',
+                                content: '请重新生成！'
+                            });
+                        }
+                    })
+                }
+            });
+            form.on('select(rn1)', function (data) {
+                var next = $("#rn2");
+                if (data.value != '') {
+
+                    $.ajax({
+                        url: '/TestCxfHibernate/REST/Misc/getCityList/'
+                            + data.value
+                            + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        asyn: false,
+                        success: function (data) {
+                            var list = data;
+                            next.empty();
+                            next.append("<option value=''>请选择市</option>");
+                            $.each(list, function (idx, obj) {
+                                next.append("<option value=" + obj.Code + ">" + obj.Name + "</option>");
+                            });
+                            form.render('select');
+                        },
+                        error: function () {
+                            layer.open({
+                                title: '生成失败',
+                                content: '请重新生成！'
+                            });
+                        }
+                    })
+                }
+            });
+            form.on('select(rn2)', function (data) {
+                var next = $("#rn3");
+                if (data.value != '') {
+                    $.ajax({
+                        url: '/TestCxfHibernate/REST/Misc/getTownList/'
+                            + data.value
+                            + '?_type=json',
+                        type: "GET",
+                        dataType: "json",
+                        contentType: 'application/json;charset=UTF-8',
+                        asyn: false,
+                        success: function (data) {
+                            var list = data;
+                            next.empty();
+                            next.append("<option value=''>请选择县/区</option>");
+                            $.each(list, function (idx, obj) {
+                                next.append("<option value= " + obj.Code + ">" + obj.Name + "</option>");
+                            });
+                            form.render('select');
+                        },
+                        error: function () {
+                            layer.open({
+                                title: '生成失败',
+                                content: '请重新生成！'
+                            });
+                        }
+                    })
+                }
+            });
+        });
+
+
+        $("#button").click(function () {
+            var sender = new Object();
+            if ($("#senderName").val() == '' || $("#senderName") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入发送人姓名！'
+                });
+                return false;
+            }
+            sender.name = $("#senderName").val();
+
+            if ($("#senderPhone").val() == '' || $("#senderPhone") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入发送人电话！'
+                });
+                return false;
+            }
+            sender.telCode = $("#senderPhone").val();
+
+            if ($("#senderPostCode").val() == '' || $("#senderPostCode") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入发送人邮编！'
+                });
+                return false;
+            }
+            sender.postCode = $("#senderPostCode").val();
+
+            if ($("#sn3").val() == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请选择发送人地址信息！'
+                });
+                return false;
+            }
+            sender.regionCode = $("#sn3").val();
+
+            sender.address = $("#sn1").find("option:selected").text() + $("#sn2").find("option:selected").text() + $("#sn3").find("option:selected").text();
+
+            if ($("#senderDetailAddress").val() == '' || $("#senderDetailAddress") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入发送人详细地址！'
+                });
+                return false;
+            }
+            sender.department = $("#senderDetailAddress").val();
+
+            $.ajax({
+                url: '/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
+                type: 'post',
+                async: false,
+                data: JSON.stringify(sender),
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    var obj = data;
+                    sender.ID = obj.ID;
+                },
+                error: function () {
+                    layer.msg('操作失败！');
+                    return false;
+                }
+            });
+
+            var receiver = new Object();
+            if ($("#receiverName").val() == '' || $("#receiverName") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入接收人姓名！'
+                });
+                return false;
+            }
+            receiver.name = $("#receiverName").val();
+
+            if ($("#receiverPhone").val() == '' || $("#receiverPhone") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入接收人电话！'
+                });
+                return false;
+            }
+            receiver.telCode = $("#receiverPhone").val();
+
+            if ($("#receiverPostCode").val() == '' || $("#receiverPostCode") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入接收人邮编！'
+                });
+                return false;
+            }
+            receiver.postCode = $("#receiverPostCode").val();
+
+            if ($("#rn3").val() == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请选择接收人地址信息！'
+                });
+                return false;
+            }
+            receiver.regionCode = $("#rn3").val();
+
+            receiver.address = $("#rn1").find("option:selected").text() + $("#rn2").find("option:selected").text() + $("#rn3").find("option:selected").text();
+
+            if ($("#receiverDetailAddress").val() == '' || $("#receiverDetailAddress") == '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入接收人详细地址！'
+                });
+                return false;
+            }
+            receiver.department = $("#receiverDetailAddress").val();
+
+            $.ajax({
+                url: '/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
+                type: 'post',
+                async: false,
+                data: JSON.stringify(receiver),
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    var obj = data;
+                    receiver.ID = obj.ID;
+                },
+                error: function () {
+                    layer.msg('操作失败！');
+                    return false;
+                }
+            });
+
+            var es = new Object();
+            es.ID = "0";
+            es.type = 0;
+            es.sender = sender;
+            es.recever = receiver;
+            es.weight = null;
+            es.tranFee = null;
+            es.packageFee = null;
+            es.insuFee = null;
+            es.accepter = null;
+            es.deliver = null;
+            es.accepteTime = null;
+            es.deliveTime = null;
+            es.acc1 = null;
+            es.acc2 = null;
+            es.status = 0;
+            $.ajax({
+                url: '/TestCxfHibernate/REST/Domain/saveExpressSheet?_type=json',
+                type: 'post',
+                data: JSON.stringify(es),
+                dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    layer.msg('操作成功！');
+                },
+                error: function () {
+                    layer.msg('操作失败！');
+                }
+            });
+        });
+    });
+
+
+</script>
 
 </body>
 
