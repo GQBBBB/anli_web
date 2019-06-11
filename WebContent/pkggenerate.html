@@ -26,27 +26,27 @@
     <script type="text/javascript" src="theme/js/moment.js"></script>
     <script type="text/javascript" src="theme/layui/layui.all.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 
-        h3 {
-            text-align: center;
-            font-size: 16px;
-            margin: 10px;
-        }
+h3 {
+	text-align: center;
+	font-size: 16px;
+	margin: 10px;
+}
 
-        /*更改下拉框选项选中颜色*/
-        .layui-form-select dl dd.layui-this {
-            background-color: #f39800
-        }
+/*更改下拉框选项选中颜色*/
+.layui-form-select dl dd.layui-this {
+	background-color: #f39800
+}
 
-        .putcenter {
-            text-align: center
-        }
-    </style>
+.putcenter {
+	text-align: center
+}
+</style>
 </head>
 
 <body>
@@ -64,26 +64,15 @@
 <div class="header">
     <div class="nav">
         <div class="drop-down clearfix">
-            <ul>
-                <li><a href="#user-index.html">----</a></li>
-                <li><a href="#user-index.html">----</a></li>
-                <li><a href="pkggenerate.html">包裹管理</a>
-                    <ul>
-                        <li><a href="pkggenerate.html">包裹生成</a></li>
-                        <li><a href="pkgcheck.html">包裹查询</a></li>
-                    </ul>
-                </li>
+                <ul>
+                <li><a href="pkggenerate.html">包裹管理</a></li>
+                <li><a href="pkggenerate.html">包裹生成</a></li>
+                <li><a href="pkgcheck.html">包裹查询</a></li>
                 <li><a href="getExpressSheetList.html">获取运单</a></li>
                 <li><a href="printForm.html">运单打印</a></li>
                 <li><a href="order.html">填写运单</a></li>
-                <li><a href="#" id="logout">退出登陆</a>
-                <li><a href="#queryExpressSheet.html">----</a></li>
-                <li><a href="#">关于我们</a>
-                    <ul>
-                        <li><a href="#">企业文化</a></li>
-                        <li><a href="#">联系我们</a></li>
-                    </ul>
-                </li>
+                <li><a href="register.html">注册</a></li>
+                <li><a href="sign.html" id="logout">退出登陆</a>
             </ul>
         </div>
     </div>
@@ -261,7 +250,7 @@
                 var next = $("#sn2");
                 if (data.value != '') {
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getCityList/'
+                        url: '/TestCxfHibernate/REST/Misc/getCityList/'
                             + data.value
                             + '?_type=json',
                         type: "GET",
@@ -293,7 +282,7 @@
                 var next = $("#sn3");
                 if (data.value != '') {
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getTownList/'
+                        url: '/TestCxfHibernate/REST/Misc/getTownList/'
                             + data.value
                             + '?_type=json',
                         type: "GET",
@@ -323,7 +312,7 @@
                 if (data.value != '') {
 
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getCityList/'
+                        url: '/TestCxfHibernate/REST/Misc/getCityList/'
                             + data.value
                             + '?_type=json',
                         type: "GET",
@@ -352,7 +341,7 @@
                 var next = $("#tn3");
                 if (data.value != '') {
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getTownList/'
+                        url: '/TestCxfHibernate/REST/Misc/getTownList/'
                             + data.value
                             + '?_type=json',
                         type: "GET",
@@ -391,7 +380,7 @@
                 var sn = $("#sn3").val();
                 var tn = $("#tn3").val();
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/CreatePackage/'
+                    url: '/TestCxfHibernate/REST/Domain/CreatePackage/'
                         + sn
                         + '/'
                         + tn

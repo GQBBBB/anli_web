@@ -57,25 +57,15 @@
 <div class="header" id="header">
     <div class="nav">
         <div class="drop-down clearfix">
-            <ul>
-                <li><a href="#user-index.html">----</a></li>
-                <li><a href="#user-index.html">----</a></li>
-                <li><a href="#user-index.html">----</a></li>
+                        <ul>
+                <li><a href="pkggenerate.html">包裹管理</a></li>
+                <li><a href="pkggenerate.html">包裹生成</a></li>
+                <li><a href="pkgcheck.html">包裹查询</a></li>
                 <li><a href="getExpressSheetList.html">获取运单</a></li>
                 <li><a href="printForm.html">运单打印</a></li>
                 <li><a href="order.html">填写运单</a></li>
-                <li><a href="#" id="logout">退出登陆</a>
-                <li><a href="#queryExpressSheet.html">----</a></li>
-                <li><a href="#">关于我们</a>
-                    <ul>
-                        <li>
-                            <a href="#">企业文化</a>
-                        </li>
-                        <li>
-                            <a href="#">联系我们</a>
-                        </li>
-                    </ul>
-                </li>
+                <li><a href="register.html">注册</a></li>
+                <li><a href="sign.html" id="logout">退出登陆</a>
             </ul>
         </div>
     </div>
@@ -139,7 +129,7 @@
             var id = $("#ID").val();
             //alert("aaaaaaaaaaaa" + kind + "bbbbbbbb" + id);
             $.ajax({
-                url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheetByKindAndID/' + kind + '/' + id + '?_type=json',
+                url: '/TestCxfHibernate/REST/Domain/getExpressSheetByKindAndID/' + kind + '/' + id + '?_type=json',
                 type: "GET",
                 dataType: "json",
                 contentType: 'application/json;charset=UTF-8',
@@ -395,7 +385,7 @@
             }
 
             $.ajax({
-                url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/updateCustomerInfo?_type=json',
+                url: '/TestCxfHibernate/REST/Misc/updateCustomerInfo?_type=json',
                 type: 'post',
                 data: JSON.stringify(customerInfo),
                 dataType: "json",
@@ -426,7 +416,7 @@
                 success: function (layero, index) {
                     var callback;
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getUserInfo/' + userID + '?_type=json',
+                        url: '/TestCxfHibernate/REST/Domain/getUserInfo/' + userID + '?_type=json',
                         type: "GET",
                         dataType: "json",
                         contentType: 'application/json;charset=UTF-8',

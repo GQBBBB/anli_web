@@ -10,12 +10,13 @@
     <meta content="中集速运、中集速运" name="keywords">
     <meta content="中集速运、中集速运" name="description">
     <meta content="Li Zhen Ya Team" name="author">
-    <title>中集速运-企业注册</title>
+    <title>中集速运-管理员注册</title>
     <link type="text/css" rel="stylesheet" href="theme/css/core.css">
     <link type="text/css" rel="stylesheet" href="theme/css/home.css">
     <link rel="stylesheet" href="theme/layui/css/layui.css">
     <script src="theme/layui/layui.js"></script>
     <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/layui/layui.all.js"></script>
 </head>
 <body>
 
@@ -96,7 +97,7 @@
                 user.URull = 0;
                 user.status = 1;
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/register?_type=json',
+                    url: '/TestCxfHibernate/REST/Misc/register?_type=json',
                     type: 'post',
                     data: JSON.stringify(user),
                     dataType: "json",

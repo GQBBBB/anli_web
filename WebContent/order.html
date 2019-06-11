@@ -44,7 +44,7 @@
                 send.address = $("input#senderAddress").val();
                 send.postCode = $("input#senderPostCode").val();
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
+                    url: '/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
                     type: 'post',
                     async: false,
                     data: JSON.stringify(send),
@@ -66,7 +66,7 @@
                 accept.address = $("input#accepterAddress").val();
                 accept.postCode = $("input#accepterPostCode").val();
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
+                    url: '/TestCxfHibernate/REST/Misc/saveCustomerInfo?_type=json',
                     type: 'post',
                     async: false,
                     data: JSON.stringify(accept),
@@ -103,7 +103,7 @@
                 //console.log(JSON.stringify(es));
 
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/saveExpressSheet?_type=json',
+                    url: '/TestCxfHibernate/REST/Domain/saveExpressSheet?_type=json',
                     type: 'post',
 
                     data: JSON.stringify(es),

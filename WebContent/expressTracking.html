@@ -202,7 +202,7 @@
                 $.session.remove("expressID");
                 //查询订单信息
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheet/' + id + '?_type=json',
+                    url: '/TestCxfHibernate/REST/Domain/getExpressSheet/' + id + '?_type=json',
                     type: "GET",
                     dataType: "json",
                     contentType: 'application/json;charset=UTF-8',
@@ -240,7 +240,7 @@
 
                 //查询订单历史
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheetHistory/' + id + '?_type=json',
+                    url: '/TestCxfHibernate/REST/Domain/getExpressSheetHistory/' + id + '?_type=json',
                     type: "GET",
                     dataType: "json",
                     contentType: 'application/json;charset=UTF-8',
@@ -284,7 +284,7 @@
                 });
                 //获取路线
                 $.ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheetRoute/' + id + '?_type=json',
+                    url: '/TestCxfHibernate/REST/Domain/getExpressSheetRoute/' + id + '?_type=json',
                     type: "GET",
                     dataType: "json",
                     contentType: 'application/json;charset=UTF-8',
@@ -325,12 +325,12 @@
                 type: 2,
                 skin: 'layui-layer-molv',
                 title: '工作人员信息',
-                content: ['http://localhost:8080/anli_web/userInfo.html', 'no'],//不允许出现滚动条
+                content: ['/anli_web/userInfo.html', 'no'],//不允许出现滚动条
                 area: ['600px', '800px'],
                 success: function (layero, index) {
                     var callback;
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getUserInfo/' + userID + '?_type=json',
+                        url: '/TestCxfHibernate/REST/Domain/getUserInfo/' + userID + '?_type=json',
                         type: "GET",
                         dataType: "json",
                         contentType: 'application/json;charset=UTF-8',

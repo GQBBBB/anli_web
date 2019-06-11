@@ -175,7 +175,7 @@
             var id = $("#ID").val();
             //alert("aaaaaaaaaaaa" + id);
             $.ajax({
-                url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getExpressSheet/' + id + '?_type=json',
+                url: '/TestCxfHibernate/REST/Domain/getExpressSheet/' + id + '?_type=json',
                 type: "GET",
                 dataType: "json",
                 contentType: 'application/json;charset=UTF-8',
@@ -201,7 +201,7 @@
                 $.ajax({
                     async: false,
                     cache: true,
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getPackageRouteList/' + expressID + '?_type=json',
+                    url: '/TestCxfHibernate/REST/Domain/getPackageRouteList/' + expressID + '?_type=json',
                     //data:expressID,
                     type: 'get',
                     dataType: 'html',

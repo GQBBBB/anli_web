@@ -60,27 +60,19 @@
 <div class="header">
     <div class="nav">
         <div class="drop-down clearfix">
-            <ul>
-                <li><a href="#user-index.html">----</a></li>
-                <li><a href="#user-index.html">----</a></li>
-                <li><a href="pkggenerate.html">包裹管理</a>
-                    <ul>
-                        <li><a href="pkggenerate.html">包裹生成</a></li>
-                        <li><a href="pkgcheck.html">包裹查询</a></li>
-                    </ul>
-                </li>
+        
+        
+        <ul>
+                <li><a href="pkggenerate.html">包裹管理</a></li>
+                <li><a href="pkggenerate.html">包裹生成</a></li>
+                <li><a href="pkgcheck.html">包裹查询</a></li>
                 <li><a href="getExpressSheetList.html">获取运单</a></li>
                 <li><a href="printForm.html">运单打印</a></li>
                 <li><a href="order.html">填写运单</a></li>
-                <li><a href="#" id="logout">退出登陆</a>
-                <li><a href="#queryExpressSheet.html"></a></li>
-                <li><a href="#">关于我们</a>
-                    <ul>
-                        <li><a href="#">企业文化</a></li>
-                        <li><a href="#">联系我们</a></li>
-                    </ul>
-                </li>
+                <li><a href="sign.html" id="logout">退出登陆</a>
             </ul>
+            
+   
         </div>
     </div>
 </div>
@@ -198,7 +190,7 @@
             }
             $
                 .ajax({
-                    url: 'http://localhost:8080/TestCxfHibernate/REST/Domain/getPackage/'
+                    url: '/TestCxfHibernate/REST/Domain/getPackage/'
                         + pkgkind
                         + '/'
                         + id
@@ -310,7 +302,7 @@
                 if (data.value != '') {
 
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getCityList/'
+                        url: '/TestCxfHibernate/REST/Misc/getCityList/'
                             + data.value
                             + '?_type=json',
                         type: "GET",
@@ -339,7 +331,7 @@
                 var next = $("#tn3");
                 if (data.value != '') {
                     $.ajax({
-                        url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/getTownList/'
+                        url: '/TestCxfHibernate/REST/Misc/getTownList/'
                             + data.value
                             + '?_type=json',
                         type: "GET",

@@ -90,7 +90,7 @@
             var pwd = $("input#userpwd").val();
             //alert("username--" + uid + "  " + "passwd--" + pwd );
             $.ajax({
-                url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/doLogin/' + uid + '/' + pwd + '?_type=json',
+                url: '/TestCxfHibernate/REST/Misc/doLogin/' + uid + '/' + pwd + '?_type=json',
                 type: "GET",
                 dataType: "html",
                 contentType: 'application/json;charset=UTF-8',
