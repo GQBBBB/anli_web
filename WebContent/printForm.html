@@ -173,7 +173,7 @@
 </div>
 <br>
 <br>
-<el-button id="button1" v-model="buttontwo" v-if="getfather != 1" style="float:right;margin-rgiht:20px;" type="info">
+<el-button id="button" v-model="buttontwo" v-if="getfather != 1" style="float:right;margin-rgiht:20px;" type="info">
 </el-button>
 </body>
 <script>
@@ -182,7 +182,7 @@
         // var barcode = document.getElementById('barcode'),
         //str = "16620902551",
         //模拟人工自动点击隐藏按钮，然后出发时间刷新页面信息。
-        $("#button1").click(function () {
+        $("#button").click(function () {
             if ($.session.get("user") == null) {
                 alert("对不起你没有权限访问该页面！");
                 window.location.href = "welcom.html"
