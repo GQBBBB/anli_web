@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="中集速运、中集速运" name="keywords">
+    <meta content="中集速运、中集速运" name="description">
+    <meta content="Li Zhen Ya Team" name="author">
+    <title>中集速运-个人注册</title>
+    <link type="text/css" rel="stylesheet" href="theme/css/core.css">
+    <link type="text/css" rel="stylesheet" href="theme/css/home.css">
+    <link rel="stylesheet" href="theme/layui/css/layui.css">
+    <script src="theme/layui/layui.js"></script>
+    <script type="text/javascript" src="theme/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="theme/layui/layui.all.js"></script>
+</head>
+<body>
+
+<header id="lzy-header">
+    <div class="lzy-container clearfix">
+        <div class="lzy-he-logo">
+            <h1>
+                <a href="index.html"><img src="theme/img/logo.png" title="" about="" name=""></a>
+            </h1>
+        </div>
+    </div>
+</header>
+<section>
+    <div class="lzy-content" id="lzy-adaption">
+        <div class="lzy-boxes lzy-boxes-reg">
+            <div class="lzy-shadow">
+                <h2>工作人员资料注册</h2>
+            </div>
+
+            <div class="login_m">
+                <div class="login_boder">
+                    <div class="login_padding">
+
+                        <h2>姓名</h2>
+                        <label>
+                            <input type="text" id="username" class="txt_input txt_input2" value="" placeholder="">
+                        </label>
+                        <h2>密码</h2>
+                        <label>
+                            <input type="password" id="passwd1" name="" class="txt_input" placeholder="">
+                        </label>
+                        <h2>重复密码</h2>
+                        <label>
+                            <input type="password" id="passwd2" name="" class="txt_input">
+                        </label>
+                        <h2>电话</h2>
+                        <label>
+                            <input type="text" id="phone" class="txt_input txt_input2" value="" placeholder="">
+                        </label>
+                        <div class="rem_sub">
+                            <div class="clearfix">
+                                <div class="rem_sub_l fl"><input type="checkbox" name="checkbox" id="save_me"
+                                                                 placeholder=""><label for="checkbox">我已阅读并同意<a
+                                        href="#">《免责申明》</a></label></div>
+                            </div>
+                            <div class="clearfix"><input type="submit" class="sub_button" name="button" id="button"
+                                                         value="注册"></div>
+                            <div class="reg"><a href="sign.html">我有帐号，去登录</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="height:100px;"></div>
+    </div>
+</section>
+
+
+<footer>
+    <div class="lzy-adaption">
+        <div class="lzy-copyright">
+            <p>Copyright © 2019 anli-2. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+<script>
+    $(function () {
+        $("#button").click(function () {
+            var user = new Object();
+            var username = $("input#username").val();
+            var passwd1 = $("input#passwd1").val();
+            var passwd2 = $("input#passwd2").val();
+            var phone = $("input#phone").val();
+            // alert("username:" + username + "  " + "passwd:" + passwd1);
+            if (passwd1 == passwd2) {
+                user.name = username;
+                user.PWD = passwd1;
+                user.telCode = phone;
+                user.URull = 0;
+                user.status = 0;
+                $.ajax({
+                    url: 'http://localhost:8080/TestCxfHibernate/REST/Misc/register?_type=json',
+                    type: 'post',
+                    data: JSON.stringify(user),
+                    dataType: "json",
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        layer.open({
+                            title: '操作成功'
+                            , content: 'UID为 '+ data + '请使用UID登陆！'
+                        });
+                    },
+                    error: function () {
+                        layer.open({
+                            title: '操作失败'
+                            , content: '请重新注册！'
+                        });
+                    }
+                });
+            } else {
+                layer.open({
+                    title: '前后密码不一致'
+                    , content: '请重新输入密码！'
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
