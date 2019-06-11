@@ -212,13 +212,11 @@
                                 "</td><td id='userID' style='color: #f39800'>" + obj.deliver +
                                 "</td><td>" + obj.accepteTime +
                                 "</td><td>" + obj.deliveTime +
-                                "</td><td>" + obj.acc1 +
-                                "</td><td>" + obj.acc2 +
+                                "</td><td id='acc1'>" + obj.acc1 +
+                                "</td><td id='acc2'>" + obj.acc2 +
                                 "</td><td>" + obj.status + "</td></tr>";
                             $("#result").append(tr);
-                            //动态改变id
-                            // $("#send").attr("class", "send" + idx);
-                            // $("#rece").attr("class", "rece" + idx);
+
                         });
                     }
                 },
@@ -474,6 +472,30 @@
                         }
                     });
                 },
+            });
+        });
+
+        $("body").on("click", "#acc1", function () {
+            var acc1 = $(this).text();
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + acc1 +'">'
+            });
+        });
+
+        $("body").on("click", "#acc2", function () {
+            var acc2 = $(this).text();
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + acc2 +'">'
             });
         });
     });
