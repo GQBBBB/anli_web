@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7f7d04a-03b6-4c27-899e-3d2285c749d0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/WebContent/echar_demo.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebContent/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/order.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,11 +15,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebContent/order.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10431">
-              <caret line="549" column="28" selection-start-line="549" selection-start-column="28" selection-end-line="549" selection-end-column="28" />
+            <state relative-caret-position="303">
+              <caret line="583" column="51" lean-forward="true" selection-start-line="583" selection-start-column="51" selection-end-line="583" selection-end-column="51" />
               <folding>
                 <element signature="n#style#0;n#tr#0;n#table#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#tr#0;n#table#1;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -29,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebContent/getExpressSheetList.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="214" column="89" selection-start-line="214" selection-start-column="89" selection-end-line="214" selection-end-column="89" />
+            <state relative-caret-position="398">
+              <caret line="226" column="23" lean-forward="true" selection-start-line="223" selection-start-column="20" selection-end-line="226" selection-end-column="23" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#th#0;n#tr#0;n#!!top" expanded="true" />
@@ -95,8 +94,8 @@
         <option value="$PROJECT_DIR$/WebContent/expressTracking.html" />
         <option value="$PROJECT_DIR$/WebContent/theme/css/core.css" />
         <option value="$PROJECT_DIR$/WebContent/personal-reg.html" />
-        <option value="$PROJECT_DIR$/WebContent/order.html" />
         <option value="$PROJECT_DIR$/WebContent/getExpressSheetList.html" />
+        <option value="$PROJECT_DIR$/WebContent/order.html" />
       </list>
     </option>
   </component>
@@ -111,8 +110,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="130" />
-    <option name="y" value="37" />
+    <option name="x" value="-3" />
+    <option name="y" value="27" />
     <option name="width" value="1750" />
     <option name="height" value="980" />
   </component>
@@ -122,7 +121,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -152,9 +150,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -184,14 +184,15 @@
       <workItem from="1559785325136" duration="4902000" />
       <workItem from="1560238266590" duration="13212000" />
       <workItem from="1560303962580" duration="594000" />
+      <workItem from="1560310965295" duration="115000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18708000" />
+    <option name="totallyTimeSpent" value="18823000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="104" y="30" width="1400" height="784" extended-state="1" />
+    <frame x="-2" y="22" width="1400" height="784" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
@@ -270,17 +271,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/order.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10431">
-          <caret line="549" column="28" selection-start-line="549" selection-start-column="28" selection-end-line="549" selection-end-column="28" />
-          <folding>
-            <element signature="n#style#0;n#tr#0;n#table#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#table#1;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/pkggenerate.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7011">
@@ -290,8 +280,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/getExpressSheetList.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="214" column="89" selection-start-line="214" selection-start-column="89" selection-end-line="214" selection-end-column="89" />
+        <state relative-caret-position="398">
+          <caret line="226" column="23" lean-forward="true" selection-start-line="223" selection-start-column="20" selection-end-line="226" selection-end-column="23" />
           <folding>
             <element signature="n#style#0;n#div#0;n#form#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#th#0;n#tr#0;n#!!top" expanded="true" />
@@ -322,6 +312,17 @@
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#p#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/order.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="583" column="51" lean-forward="true" selection-start-line="583" selection-start-column="51" selection-end-line="583" selection-end-column="51" />
+          <folding>
+            <element signature="n#style#0;n#tr#0;n#table#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#tr#0;n#table#1;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

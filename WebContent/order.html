@@ -578,7 +578,11 @@
                 dataType: "json",
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {
-                    layer.msg('操作成功！');
+                    var obj = data;
+                    layer.open({
+                        title: '操作成功'
+                        , content: '订单ID：' + obj.ID
+                    });
                 },
                 error: function () {
                     layer.msg('操作失败！');
